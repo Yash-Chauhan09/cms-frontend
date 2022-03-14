@@ -1,0 +1,46 @@
+.book {
+  padding: 2rem 1rem;
+}
+.book__details {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.book__img img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+}
+.book__detail {
+  margin-left: 0.4rem;
+}
+.book__detailHead {
+  font-size: 1.2rem;
+  font-weight: bolder;
+}
+.book__detailPara {
+  font-weight: 200;
+  font-size: 0.9rem;
+  color: rgb(99, 98, 98);
+}
+.book__nav {
+  display: flex;
+  align-items: center;
+  width: 1100px;
+  border-bottom: 2px solid rgba(185, 181, 181, 0.418);
+  margin-bottom: 1rem;
+  /* background-color: red; */
+}
+.book__nav a {
+  margin: 0 0.5rem;
+  text-decoration: none;
+  padding: 0.5rem;
+}
+.book__nav h5 {
+  color: black;
+  text-transform: capitalize;
+  font-size: 0.9rem;
+}
+.bookNav__active {
+  background-color: rgba(202, 198, 198, 0.342);
+}

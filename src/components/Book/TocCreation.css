@@ -1,0 +1,159 @@
+.toc {
+  display: flex;
+  flex-direction: column;
+  width: 1100px;
+}
+.toc__top {
+  display: flex;
+  align-items: center;
+  padding: 1.3rem 1rem;
+  border: 2px solid rgba(102, 121, 136, 0.418);
+  border-radius: 10px;
+  background-color: #fff;
+}
+.toc__topHeading {
+  font-size: 0.9rem;
+  margin-right: 1rem;
+}
+.toc__topDraft {
+  font-weight: 700;
+  background-color: rgba(8, 8, 8, 0.733);
+  padding: 0.1rem 0.5rem;
+  color: #fff;
+  border-radius: 6px;
+}
+.toc__body {
+  margin-top: 1rem;
+}
+.toc__data {
+  display: flex;
+  align-items: center;
+  border: 2px solid rgba(102, 121, 136, 0.418);
+  border-bottom: 0px;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  height: 80px;
+  background-color: #fff;
+  cursor: pointer;
+}
+.toc__data:last-child {
+  border-bottom: 2px solid rgba(102, 121, 136, 0.418);
+}
+.toc__data:hover {
+  background-color: #ebf2f7;
+}
+.toc__data:hover .toc__dataRight {
+  display: flex;
+}
+.toc__dataLeft {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0.7;
+}
+.toc__dataName {
+  display: flex;
+  align-items: center;
+}
+.toc__dataName h5,
+.toc__inpName h5 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(102, 121, 136, 0.747);
+  margin-right: 1rem;
+}
+.toc__dataName h4 {
+  font-weight: 1.05rem;
+}
+.toc__dataPage p {
+  font-size: 1.1rem;
+  font-weight: normal;
+}
+.toc__dataRight {
+  flex: 0.3;
+  display: flex;
+  justify-content: center;
+  display: none;
+  transition: all 0.8s ease;
+}
+.toc__addChapters {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+}
+.toc__addChapters p {
+  font-size: 0.9rem;
+  margin: 0 0.6rem;
+  font-weight: bold;
+}
+.toc__addButtons {
+  font-weight: bolder;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #4b42f7;
+  background-color: #fafafa;
+  padding: 0.8rem 1rem;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+.toc__addButtons:hover {
+  background-color: rgba(75, 97, 126, 0.068);
+}
+.toc__inpName {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+.toc__inpName input,
+.toc__inpPage input {
+  padding: 0.6rem 0.7rem;
+  width: 100%;
+  background-color: rgba(75, 97, 126, 0.068);
+  border: none;
+  font-size: 1rem;
+  border-radius: 20px;
+  outline: none;
+}
+.toc__inpPage input {
+  width: 80px;
+  margin-left: 3rem;
+}
+.toc__dataButton {
+  flex: 0.3;
+  display: flex;
+  justify-content: center;
+}
+.toc__dataButton button {
+  margin: 0 0.5rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  background-color: #353434;
+  font-size: 1rem;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.801);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.toc__dataButton button:hover {
+  background-color: rgba(255, 255, 255, 0.801);
+  color: #353434;
+}
+.toc__nullChapters {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+.toc__nullChapters h5 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  line-height: 1;
+  text-transform: capitalize;
+}
