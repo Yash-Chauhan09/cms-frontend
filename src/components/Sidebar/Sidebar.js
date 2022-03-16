@@ -12,7 +12,7 @@ function Sidebar() {
         <LibraryBooksIcon />
         <p>Library</p>
       </NavLink>
-      <NavLink exact activeClassName="sidebar__active" to="">
+      <NavLink exact activeClassName="sidebar__active" to="/">
         <AccountBalanceWalletIcon />
         <p>Booklets</p>
       </NavLink>

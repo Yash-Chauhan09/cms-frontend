@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ContentTable from "./ContentTable";
 import "./TocCreation.css";
-import TocTable from "./TocTable";
 // import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 const Data = [
   {
@@ -52,13 +51,8 @@ function ContentCreation() {
       </div>
       <div className="toc__body">
         {tocData.map((data, index) => (
-          <div className="toc__data">
-            <ContentTable
-              key={index}
-              id={index}
-              chName={data.name}
-              pageNo={data.page}
-            />
+          <div className="toc__data" key={index}>
+            <ContentTable id={index} chName={data.name} pageNo={data.page} />
           </div>
         ))}
       </div>

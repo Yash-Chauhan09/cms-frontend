@@ -12,15 +12,15 @@ function BookDetail() {
       >
         <p>Book type: </p>
         <input type="radio" id="html" name="fav_language" value="Textbook" /> 
-        <label for="Textbook">Textbook</label>
+        <label htmlFor="Textbook">Textbook</label>
           <input type="radio" id="css" name="fav_language" value="Exams" /> 
-        <label for="Exams">Exams</label>
+        <label htmlFor="Exams">Exams</label>
         <input
           type="radio"
           id="Tests"
           name="fav_language"
           value="Tests"
-        />  <label for="Tests">Tests</label>
+        />  <label htmlFor="Tests">Tests</label>
       </div>
       <br />
       <p>Book title</p>
@@ -60,7 +60,7 @@ function BookDetail() {
       <input
         className="bookDetail__data"
         type="text"
-        defaultValue={"Book for automation test."}
+        defaultValue={"Book htmlFor automation test."}
       />
       <br />
       <br />
@@ -95,9 +95,9 @@ function BookDetail() {
       <div style={{ display: "flex", alignItems: "center" }}>
         <p>Visibility of questions: </p>
         <input type="radio" id="html" name="fav_language" value="Yes" /> 
-        <label for="Yes">Yes</label>
+        <label htmlFor="Yes">Yes</label>
           <input type="radio" id="css" name="fav_language" value="No" /> 
-        <label for="No">No</label>
+        <label htmlFor="No">No</label>
       </div>
       <br />
       <div style={{ display: "flex", alignItems: "center" }}>

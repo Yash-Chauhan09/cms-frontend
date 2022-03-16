@@ -65,9 +65,8 @@ function TocCreation() {
       </div>
       <div className="toc__body">
         {tocData.map((data, index) => (
-          <div className="toc__data">
+          <div className="toc__data" key={index}>
             <TocTable
-              key={index}
               id={index}
               chName={data.name}
               pageNo={data.page}

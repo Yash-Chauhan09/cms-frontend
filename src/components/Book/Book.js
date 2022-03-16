@@ -13,7 +13,39 @@ import {
 import Chapter from "./Chapter";
 function Book({ name, author, isbn, sub, classes, img }) {
   const { path, url } = useRouteMatch();
-  const [selected, setSelected] = useState(false);
+  const [initialState, setInitialState] = useState({
+    activeObject: null,
+    objects: [
+      {
+        id: 1,
+        name: "Toc creation",
+        linkroute: "toc",
+      },
+      {
+        id: 2,
+        name: "Content creation",
+        linkroute: "content-creation",
+      },
+      {
+        id: 3,
+        name: "Book detail",
+        linkroute: "book-detail",
+      },
+    ],
+  });
+  const toggleActive = (id) => {
+    setInitialState({
+      ...initialState,
+      activeObject: initialState.objects[id],
+    });
+  };
+  const toggleActiveClass = (id) => {
+    if (initialState.objects[id] === initialState.activeObject) {
+      return "bookNav__active";
+    } else {
+      return "bookNav__Inactive";
+    }
+  };
   const id = useParams();
   return (
     <div className="book">
@@ -32,36 +64,17 @@ function Book({ name, author, isbn, sub, classes, img }) {
         </div>
       </div>
       <nav className="book__nav">
-        <NavLink
-          onClick={() =>
-            selected === true ? setSelected(false) : setSelected(true)
-          }
-          className={selected ? "bookNav__active" : ""}
-          exact
-          to={`${url}/toc`}
-        >
-          <h5>Toc creation</h5>
-        </NavLink>
-        <NavLink
-          onClick={() =>
-            selected === true ? setSelected(false) : setSelected(true)
-          }
-          className={selected ? "bookNav__active" : ""}
-          exact
-          to={`${url}/content-creation`}
-        >
-          <h5>content creation</h5>
-        </NavLink>
-        <NavLink
-          onClick={() =>
-            selected === true ? setSelected(false) : setSelected(true)
-          }
-          className={selected ? "bookNav__active" : ""}
-          exact
-          to={`${url}/book-detail`}
-        >
-          <h5>Book detail</h5>
-        </NavLink>
+        {initialState.objects.map((elem) => (
+          <NavLink
+            className={toggleActiveClass(elem.id)}
+            onClick={() => toggleActive(elem.id)}
+            exact
+            key={elem.id}
+            to={`${url}/${elem.linkroute}`}
+          >
+            <h5>{elem.name}</h5>
+          </NavLink>
+        ))}
       </nav>
       <Switch>
         <Route path={`${path}/toc/:id`} component={Chapter} />

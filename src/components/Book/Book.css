@@ -32,7 +32,7 @@
   /* background-color: red; */
 }
 .book__nav a {
-  margin: 0 0.5rem;
+  margin-right: 0.5rem;
   text-decoration: none;
   padding: 0.5rem;
 }
@@ -43,4 +43,8 @@
 }
 .bookNav__active {
   background-color: rgba(202, 198, 198, 0.342);
+  border-top: 2px solid #0000ff;
+}
+.bookNav__Inactive {
+  background-color: none;
 }
