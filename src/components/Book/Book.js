@@ -76,6 +76,7 @@ function Book({ name, author, isbn, sub, classes, img }) {
           </NavLink>
         ))}
       </nav>
+      {/* <TocCreation /> */}
       <Switch>
         <Route path={`${path}/toc/:id`} component={Chapter} />
         <Route path={`${path}/content-creation/:id`} component={Chapter} />

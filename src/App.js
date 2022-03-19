@@ -46,16 +46,3 @@ function App() {
 }
 
 export default App;
-
-/*
-<Route path="/library" element={</Library>}>
-<Route path="/book" element={</Book>}>
-<Route path="/toc" element={</toc>} />
-<Route path="/toc" element={</toc>} />
-<Route path="/toc" element={</toc>} />
-
-</Route>
-</Route>
-
-
-*/

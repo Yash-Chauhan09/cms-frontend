@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ContentTable from "./ContentTable";
 import "./TocCreation.css";
-// import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 const Data = [
   {
     type: "chapter",
@@ -43,7 +42,6 @@ const Data = [
 function ContentCreation() {
   const [tocData, setTocData] = useState(Data);
 
-  // console.log(tocData);
   return (
     <div className="toc">
       <div className="toc__top">

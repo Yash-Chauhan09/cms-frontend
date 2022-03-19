@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import "./TocCreation.css";
 import TocTable from "./TocTable";
-// import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 const Data = [
   {
     type: "chapter",

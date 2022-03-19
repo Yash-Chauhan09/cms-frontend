@@ -22,9 +22,7 @@ function TocTable({
     <div className="toc__data">
       <div className="toc__dataLeft">
         <div className="toc__inpName">
-          <Link to={`${url}/${id}`}>
-            <h5>CH</h5>
-          </Link>
+          <h5>CH</h5>
           <input type="text" placeholder="Name" />
         </div>
         <div className="toc__inpPage">

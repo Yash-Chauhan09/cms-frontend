@@ -2,7 +2,6 @@
   flex: 0.3;
   display: flex;
   justify-content: space-around;
-  /* margin-left: 1.5rem; */
 }
 .content__dataRight h5 {
   font-size: 1.1rem;

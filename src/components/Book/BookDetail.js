@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import "./BookDetail.css";
 
 function BookDetail() {
+  const [user, setUser] = useState("");
+  const handleDisabale = () => {
+    if (user === "") {
+      return true;
+    } else {
+      return false;
+    }
+  };
   return (
     <div className="bookDetail">
       <div
@@ -28,6 +36,7 @@ function BookDetail() {
         className="bookDetail__data"
         type="text"
         defaultValue={"Zzzz- Automation Test (PLEASE dont delete it)"}
+        disabled={handleDisabale()}
       />
       <br />
       <br />
@@ -44,6 +53,7 @@ function BookDetail() {
             className="bookDetail__data"
             type="text"
             defaultValue={"Not Applicable"}
+            disabled={handleDisabale()}
           />
         </div>
         <div style={{ width: "30%" }}>
@@ -52,6 +62,7 @@ function BookDetail() {
             className="bookDetail__data"
             type="text"
             defaultValue={"12345678900"}
+            disabled={handleDisabale()}
           />
         </div>
       </div>
@@ -61,6 +72,7 @@ function BookDetail() {
         className="bookDetail__data"
         type="text"
         defaultValue={"Book htmlFor automation test."}
+        disabled={handleDisabale()}
       />
       <br />
       <br />
@@ -71,6 +83,7 @@ function BookDetail() {
             className="bookDetail__data"
             type="text"
             defaultValue={"NaN"}
+            disabled={handleDisabale()}
           />
         </div>
         <div style={{ width: "30%" }}>
@@ -79,6 +92,7 @@ function BookDetail() {
             className="bookDetail__data"
             type="text"
             defaultValue={"2021"}
+            disabled={handleDisabale()}
           />
         </div>
       </div>
@@ -89,6 +103,7 @@ function BookDetail() {
           className="bookDetail__data"
           type="text"
           defaultValue={"Enter edition"}
+          disabled={handleDisabale()}
         />
       </div>
       <br />
@@ -107,6 +122,7 @@ function BookDetail() {
             className="bookDetail__data"
             type="text"
             defaultValue={"College"}
+            disabled={handleDisabale()}
           />
         </div>
         <div style={{ width: "50%" }}>
@@ -115,6 +131,7 @@ function BookDetail() {
             className="bookDetail__data"
             type="text"
             defaultValue={"Biology"}
+            disabled={handleDisabale()}
           />
         </div>
       </div>
@@ -126,6 +143,7 @@ function BookDetail() {
             className="bookDetail__data"
             type="text"
             defaultValue={"Biology"}
+            disabled={handleDisabale()}
           />
         </div>
         <div style={{ width: "50%" }}>
@@ -134,6 +152,7 @@ function BookDetail() {
             className="bookDetail__data"
             type="text"
             defaultValue={"English"}
+            disabled={handleDisabale()}
           />
         </div>
       </div>
@@ -144,6 +163,7 @@ function BookDetail() {
           className="bookDetail__data"
           type="text"
           defaultValue={"Accounting"}
+          disabled={handleDisabale()}
         />
       </div>
     </div>

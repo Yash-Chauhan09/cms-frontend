@@ -12,15 +12,15 @@ function Sidebar() {
         <LibraryBooksIcon />
         <p>Library</p>
       </NavLink>
-      <NavLink exact activeClassName="sidebar__active" to="/">
+      <NavLink exact activeClassName="sidebar__active" to="/booklet">
         <AccountBalanceWalletIcon />
         <p>Booklets</p>
       </NavLink>
-      <NavLink exact activeClassName="sidebar__active" to="/">
+      <NavLink exact activeClassName="sidebar__active" to="/user">
         <PersonIcon />
         <p>Users</p>
       </NavLink>
-      <NavLink exact activeClassName="sidebar__active" to="/">
+      <NavLink exact activeClassName="sidebar__active" to="/marketplace">
         <ShowChartIcon />
         <p>Market</p>
       </NavLink>
