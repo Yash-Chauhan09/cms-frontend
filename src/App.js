@@ -2,16 +2,28 @@ import "./App.css";
 import Login from "./components/login/Login";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Library from "./components/Library/Library";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Book from "./components/Book/Book";
 import Sidebar from "./components/Sidebar/Sidebar";
+import { useStateValue } from "./StateProvider";
+import { actionTypes } from "./reducer";
 // import Chapter from "./components/Book/Chapter";
 
 function App() {
-  const [user, setUser] = useState("");
+  const [{ user, userRole, accesstoken }, dispatch] = useStateValue();
   useEffect(() => {
-    setUser("yash");
-  }, []);
+    const user = localStorage.getItem("user");
+    const userRole = localStorage.getItem("role");
+    const accessToken = localStorage.getItem("token");
+    if (accessToken) {
+      dispatch({
+        type: actionTypes.SET_USER,
+        user: user,
+        userRole: userRole,
+        accesstoken: accessToken,
+      });
+    }
+  }, [dispatch]);
 
   return user ? (
     <div className="app">
@@ -28,7 +40,7 @@ function App() {
             sub="Biology"
             clas="biology"
             img="https://srv-supersonic-images.z-dn.net/cover_images/606d6bff-07fe-4ce1-98fa-1308c37e9b3f.jpeg"
-          />
+          />{" "}
         </Route>
         <Route path="/" exact>
           <Redirect to="/library" />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Route, Switch } from "react-router-dom";
+// import { Link, Route, Switch } from "react-router-dom";
 import "./TocCreation.css";
 import TocTable from "./TocTable";
 const Data = [
@@ -40,9 +40,9 @@ const Data = [
     answer: "5",
   },
 ];
-function TocCreation() {
+function TocCreation({ tocData }) {
   const [isEdit, setIsEdit] = useState(false);
-  const [tocData, setTocData] = useState(Data);
+  // const [tocData, setTocData] = useState(Data);
   const [upId, setUpId] = useState();
 
   // console.log(tocData);
@@ -66,12 +66,14 @@ function TocCreation() {
         {tocData.map((data, index) => (
           <div className="toc__data" key={index}>
             <TocTable
-              id={index}
+              id={data.nodeid}
               chName={data.name}
               pageNo={data.page}
               onEdit={editChapter}
               updatedId={upId}
               cancel={handleCancel}
+              type={data.type}
+              parentid={data.parentid}
             />
           </div>
         ))}

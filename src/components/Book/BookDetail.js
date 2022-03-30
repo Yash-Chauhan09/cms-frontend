@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./BookDetail.css";
 
-function BookDetail() {
+function BookDetail({ bookdetail }) {
   const [user, setUser] = useState("");
   const handleDisabale = () => {
     if (user === "") {
@@ -35,7 +35,7 @@ function BookDetail() {
       <input
         className="bookDetail__data"
         type="text"
-        defaultValue={"Zzzz- Automation Test (PLEASE dont delete it)"}
+        defaultValue={bookdetail.title}
         disabled={handleDisabale()}
       />
       <br />
@@ -52,7 +52,7 @@ function BookDetail() {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={"Not Applicable"}
+            defaultValue={bookdetail.author}
             disabled={handleDisabale()}
           />
         </div>
@@ -61,7 +61,7 @@ function BookDetail() {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={"12345678900"}
+            defaultValue={bookdetail.isbn}
             disabled={handleDisabale()}
           />
         </div>
@@ -71,7 +71,7 @@ function BookDetail() {
       <input
         className="bookDetail__data"
         type="text"
-        defaultValue={"Book htmlFor automation test."}
+        defaultValue={bookdetail.description}
         disabled={handleDisabale()}
       />
       <br />
@@ -82,7 +82,7 @@ function BookDetail() {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={"NaN"}
+            defaultValue={bookdetail.publisher}
             disabled={handleDisabale()}
           />
         </div>
@@ -91,7 +91,7 @@ function BookDetail() {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={"2021"}
+            defaultValue={bookdetail.published}
             disabled={handleDisabale()}
           />
         </div>
@@ -102,7 +102,7 @@ function BookDetail() {
         <input
           className="bookDetail__data"
           type="text"
-          defaultValue={"Enter edition"}
+          defaultValue={bookdetail.edition}
           disabled={handleDisabale()}
         />
       </div>
@@ -121,7 +121,7 @@ function BookDetail() {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={"College"}
+            defaultValue={bookdetail.board}
             disabled={handleDisabale()}
           />
         </div>
@@ -130,7 +130,7 @@ function BookDetail() {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={"Biology"}
+            defaultValue={bookdetail.subject}
             disabled={handleDisabale()}
           />
         </div>
@@ -142,7 +142,7 @@ function BookDetail() {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={"Biology"}
+            defaultValue={bookdetail.class}
             disabled={handleDisabale()}
           />
         </div>
@@ -151,7 +151,7 @@ function BookDetail() {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={"English"}
+            defaultValue={bookdetail.lang}
             disabled={handleDisabale()}
           />
         </div>

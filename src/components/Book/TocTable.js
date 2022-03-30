@@ -16,6 +16,8 @@ function TocTable({
   onEdit,
   updatedId,
   cancel,
+  type,
+  parentid,
 }) {
   const { url } = useRouteMatch();
   return add ? (

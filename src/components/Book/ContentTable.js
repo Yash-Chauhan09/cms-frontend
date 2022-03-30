@@ -3,7 +3,16 @@ import "./TocCreation.css";
 import "./ContentCreation.css";
 import { Link, useRouteMatch } from "react-router-dom";
 
-function ContentTable({ chName, pageNo, id }) {
+function ContentTable({
+  chName,
+  pageNo,
+  id,
+  type,
+  parentid,
+  question,
+  answer,
+  totalNo,
+}) {
   const { url } = useRouteMatch();
   return (
     <>
@@ -22,9 +31,9 @@ function ContentTable({ chName, pageNo, id }) {
         </div>
       </div>
       <div className="content__dataRight">
-        <h5>Q: 2/127</h5>
-        <h5>A: 1/127</h5>
-        <h5>V: 0/127</h5>
+        <h5>Q: 2/{totalNo}</h5>
+        <h5>A: 1/{totalNo}</h5>
+        <h5>V: 0/{totalNo}</h5>
       </div>
     </>
   );

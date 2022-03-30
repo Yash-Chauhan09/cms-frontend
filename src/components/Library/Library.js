@@ -6,13 +6,28 @@ import { ArrowForward, ArrowBack } from "@material-ui/icons";
 import TableData from "./TableData";
 import data from "./bookData.json";
 import ReactPaginate from "react-paginate";
+import { useStateValue } from "../../StateProvider";
+import axios from "axios";
 
 function Library() {
+  const [{ accesstoken }] = useStateValue();
   const [table, setTable] = useState([]);
 
   useEffect(() => {
-    setTable(data);
-  }, []);
+    axios({
+      method: "get",
+      url: "https://freecoedu-cms.herokuapp.com/index",
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setTable(res.data);
+      })
+      .catch((e) => console.log(e));
+  }, [accesstoken]);
   const [pageNumber, setPageNumber] = useState(0);
   const [tablePerPage, setTablePerPage] = useState(4);
   const [option, setOption] = useState(4);
@@ -32,12 +47,12 @@ function Library() {
           img={content.cover}
           bookName={content.title}
           isbn={content.isbn}
-          board={content.Board}
+          board={content.board}
           classes={content.class}
           subject={content.subject}
-          country={content.country}
-          language={content.language}
-          id={index}
+          // country={content.country}
+          language={content.lang}
+          id={content.bookid}
         />
       );
     });
@@ -88,7 +103,7 @@ function Library() {
           <th className="library__tableHead">Board</th>
           <th className="library__tableHead">Class</th>
           <th className="library__tableHead">Subject</th>
-          <th className="library__tableHead">Country</th>
+          {/* <th className="library__tableHead">Country</th> */}
           <th className="library__tableHead">Language</th>
         </tr>
         {displayTables}

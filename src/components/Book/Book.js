@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Book.css";
 import TocCreation from "./TocCreation";
 import ContentCreation from "./ContentCreation";
@@ -11,8 +11,13 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 import Chapter from "./Chapter";
-function Book({ name, author, isbn, sub, classes, img }) {
+import axios from "axios";
+import { useStateValue } from "../../StateProvider";
+function Book() {
+  const [{ accesstoken }] = useStateValue();
   const { path, url } = useRouteMatch();
+  const [toc, setToc] = useState([]);
+  const [bookInfo, setBookInfo] = useState({});
   const [initialState, setInitialState] = useState({
     activeObject: null,
     objects: [
@@ -46,20 +51,37 @@ function Book({ name, author, isbn, sub, classes, img }) {
       return "bookNav__Inactive";
     }
   };
-  const id = useParams();
+  const { bookid } = useParams();
+  // console.log(id);
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}?withProgress=false`,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setToc(res.data.toc);
+        setBookInfo(res.data.book_info);
+      })
+      .catch((e) => console.log(e));
+  }, [accesstoken, bookid]);
   return (
     <div className="book">
       <div className="book__details">
         <div className="book__img">
-          <img src={img} alt="thumbnail" />
+          <img src={bookInfo.cover} alt="prev" />
         </div>
         <div className="book__detail">
-          <h3 className="book__detailHead">{name}</h3>
+          <h3 className="book__detailHead">{bookInfo.title}</h3>
           <p className="book__detailPara">
-            Author: {author} / ISBN: {isbn}
+            Author: {bookInfo.author} / ISBN: {bookInfo.isbn}
           </p>
           <p className="book__detailPara">
-            Class: {classes} / Subject: {sub}
+            Class: {bookInfo.class} / Subject: {bookInfo.subject}
           </p>
         </div>
       </div>
@@ -80,9 +102,15 @@ function Book({ name, author, isbn, sub, classes, img }) {
       <Switch>
         <Route path={`${path}/toc/:id`} component={Chapter} />
         <Route path={`${path}/content-creation/:id`} component={Chapter} />
-        <Route path={`${path}/toc`} component={TocCreation} />
-        <Route path={`${path}/content-creation`} component={ContentCreation} />
-        <Route path={`${path}/book-detail`} component={BookDetail} />
+        <Route path={`${path}/toc`}>
+          <TocCreation tocData={toc} />
+        </Route>
+        <Route path={`${path}/content-creation`}>
+          <ContentCreation bookid={bookid} />
+        </Route>
+        <Route path={`${path}/book-detail`}>
+          <BookDetail bookdetail={bookInfo} />
+        </Route>
       </Switch>
     </div>
   );

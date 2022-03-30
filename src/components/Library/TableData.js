@@ -8,7 +8,7 @@ function TableData({
   board,
   classes,
   subject,
-  country,
+  // country,
   language,
   id,
 }) {
@@ -19,7 +19,7 @@ function TableData({
         to={`/library/${id}`}
       >
         <td className="library__tableBody library__tableImg">
-          <img src={img} alt="thumbnail" />
+          <img src={img} alt="t" />
           <span>{bookName}</span>
         </td>
       </Link>
@@ -27,7 +27,7 @@ function TableData({
       <td className="library__tableBody">{board}</td>
       <td className="library__tableBody">{classes}</td>
       <td className="library__tableBody">{subject}</td>
-      <td className="library__tableBody">{country}</td>
+      {/* <td className="library__tableBody">{country}</td> */}
       <td className="library__tableBody">{language}</td>
     </tr>
   );

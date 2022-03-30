@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useStateValue } from "../../StateProvider";
 import ContentTable from "./ContentTable";
 import "./TocCreation.css";
 const Data = [
@@ -39,8 +41,26 @@ const Data = [
     answer: "5",
   },
 ];
-function ContentCreation() {
-  const [tocData, setTocData] = useState(Data);
+function ContentCreation({ bookid }) {
+  // const [tocData, setTocData] = useState(Data);
+  const [{ accesstoken }] = useStateValue();
+  const [content, setContent] = useState([]);
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}?withProgress=true`,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setContent(res.data.toc);
+      })
+      .catch((e) => console.log(e));
+  }, [accesstoken, bookid]);
 
   return (
     <div className="toc">
@@ -48,9 +68,18 @@ function ContentCreation() {
         <p className="toc__topHeading">Table Of Contents</p>
       </div>
       <div className="toc__body">
-        {tocData.map((data, index) => (
+        {content.map((data, index) => (
           <div className="toc__data" key={index}>
-            <ContentTable id={index} chName={data.name} pageNo={data.page} />
+            <ContentTable
+              id={data.nodeid}
+              chName={data.name}
+              pageNo={data.page}
+              type={data.type}
+              parentid={data.parentid}
+              question={data.question}
+              answer={data.answer}
+              totalNo={content.length}
+            />
           </div>
         ))}
       </div>
