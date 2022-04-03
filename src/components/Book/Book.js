@@ -13,6 +13,10 @@ import {
 import Chapter from "./Chapter";
 import axios from "axios";
 import { useStateValue } from "../../StateProvider";
+import TocChildren from "./TocChildren";
+import TocQuestionChildren from "./TocQuestionChildren";
+import ContentChidren from "./ContentChidren";
+import ContentQuestionChildren from "./ContentQuestionChildren";
 function Book() {
   const [{ accesstoken }] = useStateValue();
   const { path, url } = useRouteMatch();
@@ -100,8 +104,19 @@ function Book() {
       </nav>
       {/* <TocCreation /> */}
       <Switch>
-        <Route path={`${path}/toc/:id`} component={Chapter} />
-        <Route path={`${path}/content-creation/:id`} component={Chapter} />
+        <Route path={`${path}/toc/:id/:exid`}>
+          <TocQuestionChildren bookid={bookid} />
+        </Route>
+        <Route path={`${path}/toc/:id`}>
+          <TocChildren bookid={bookid} />
+        </Route>
+        <Route path={`${path}/content-creation/:id/:exid`}>
+          <ContentQuestionChildren bookid={bookid} />
+        </Route>
+        <Route path={`${path}/content-creation/:id`}>
+          <ContentChidren bookid={bookid} />
+        </Route>
+        {/* <Route path={`${path}/content-creation/:id`} component={Chapter} /> */}
         <Route path={`${path}/toc`}>
           <TocCreation tocData={toc} />
         </Route>

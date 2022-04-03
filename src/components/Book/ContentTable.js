@@ -14,29 +14,80 @@ function ContentTable({
   totalNo,
 }) {
   const { url } = useRouteMatch();
-  return (
-    <>
-      <div className="toc__dataLeft">
-        <div className="toc__dataName">
-          <h5>CH</h5>
-          <Link
-            style={{ textDecoration: "none", color: "#000" }}
-            to={`${url}/${id}`}
-          >
-            <h4>{chName}</h4>
-          </Link>
+
+  if (type === "chapter") {
+    return (
+      <>
+        <div className="toc__dataLeft">
+          <div className="toc__dataName">
+            <h5>CH</h5>
+            <Link
+              style={{ textDecoration: "none", color: "#000" }}
+              to={`${url}/${id}`}
+            >
+              <h4>{chName}</h4>
+            </Link>
+          </div>
+          <div className="toc__dataPage">
+            <p>{pageNo}</p>
+          </div>
         </div>
-        <div className="toc__dataPage">
-          <p>{pageNo}</p>
+        <div className="content__dataRight">
+          <h5>Q: 2/{totalNo}</h5>
+          <h5>A: 1/{totalNo}</h5>
+          <h5>V: 0/{totalNo}</h5>
         </div>
-      </div>
-      <div className="content__dataRight">
-        <h5>Q: 2/{totalNo}</h5>
-        <h5>A: 1/{totalNo}</h5>
-        <h5>V: 0/{totalNo}</h5>
-      </div>
-    </>
-  );
+      </>
+    );
+  } else if (type === "exercise") {
+    return (
+      <>
+        <div className="toc__dataLeft">
+          <div className="toc__dataName">
+            <h5>EX</h5>
+            <Link
+              style={{ textDecoration: "none", color: "#000" }}
+              to={`${url}/${id}`}
+            >
+              <h4>{chName}</h4>
+            </Link>
+          </div>
+          <div className="toc__dataPage">
+            <p>{pageNo}</p>
+          </div>
+        </div>
+        <div className="content__dataRight">
+          <h5>Q: 2/{totalNo}</h5>
+          <h5>A: 1/{totalNo}</h5>
+          <h5>V: 0/{totalNo}</h5>
+        </div>
+      </>
+    );
+  } else if (type === "question") {
+    return (
+      <>
+        <div className="toc__dataLeft">
+          <div className="toc__dataName">
+            <h5>Q</h5>
+            <Link
+              style={{ textDecoration: "none", color: "#000" }}
+              to={`${url}/${id}`}
+            >
+              <h4>{chName}</h4>
+            </Link>
+          </div>
+          <div className="toc__dataPage">
+            <p>{pageNo}</p>
+          </div>
+        </div>
+        <div className="content__dataRight">
+          <h5>Q: 2/{totalNo}</h5>
+          <h5>A: 1/{totalNo}</h5>
+          <h5>V: 0/{totalNo}</h5>
+        </div>
+      </>
+    );
+  }
 }
 
 export default ContentTable;

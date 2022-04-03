@@ -23,7 +23,7 @@ function Library() {
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setTable(res.data);
       })
       .catch((e) => console.log(e));
@@ -36,7 +36,7 @@ function Library() {
     const selectedOne = e.target.value;
     setOption(selectedOne);
     setTablePerPage(selectedOne);
-    console.log(option);
+    // console.log(option);
   };
   const displayTables = table
     .slice(pagesVisited, pagesVisited + tablePerPage)

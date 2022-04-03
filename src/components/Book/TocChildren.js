@@ -1,48 +1,16 @@
-import React, { useState } from "react";
-// import { Link, Route, Switch } from "react-router-dom";
-import "./TocCreation.css";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useStateValue } from "../../StateProvider";
 import TocTable from "./TocTable";
-const Data = [
-  {
-    type: "chapter",
-    parentid: null,
-    bookid: "dwedew",
-    name: "Chapter 2 : Integers and Algebraic Expressions",
-    page: "85",
-    question: "2+3?",
-    answer: "5",
-  },
-  {
-    type: "chapter",
-    parentid: null,
-    bookid: "dwedew",
-    name: "Chapter 3 : Integers and Algebraic Expressions",
-    page: "85",
-    question: "2+3?",
-    answer: "5",
-  },
-  {
-    type: "chapter",
-    parentid: null,
-    bookid: "dwedew",
-    name: "Chapter 4 : Integers and Algebraic Expressions",
-    page: "85",
-    question: "2+3?",
-    answer: "5",
-  },
-  {
-    type: "chapter",
-    parentid: null,
-    bookid: "dwedew",
-    name: "Chapter 5 : Integers and Algebraic Expressions",
-    page: "85",
-    question: "2+3?",
-    answer: "5",
-  },
-];
-function TocCreation({ tocData }) {
+
+function TocChildren({ bookid }) {
+  const { id } = useParams();
+  const [{ accesstoken }] = useStateValue();
+  const [tocData, setTocData] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [upId, setUpId] = useState();
+  const [question, setQuestion] = useState([]);
 
   const editChapter = (id) => {
     setUpId(id);
@@ -54,11 +22,26 @@ function TocCreation({ tocData }) {
     setUpId(null);
     console.log(upId);
   };
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/children/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setTocData(res.data);
+      })
+      .catch((e) => console.log(e));
+  }, [accesstoken, bookid]);
   return (
     <div className="toc">
       <div className="toc__top">
         <p className="toc__topHeading">Table Of Contents</p>
-        <h5 className="toc__topDraft">Draft</h5>
+        <h5 className="toc__topDraft"> Draft</h5>
       </div>
       <div className="toc__body">
         {tocData.map((data, index) => (
@@ -72,8 +55,8 @@ function TocCreation({ tocData }) {
               cancel={handleCancel}
               type={data.type}
               parentid={data.parentid}
+              bookid={bookid}
               nodeid={data.nodeid}
-              bookid={data.bookid}
             />
           </div>
         ))}
@@ -83,18 +66,19 @@ function TocCreation({ tocData }) {
             type={tocData[0].type}
             click={handleClick}
             bookid={tocData[0].bookid}
+            id={id}
           />
         )}
       </div>
       <div className="toc__addChapters">
         <button onClick={() => setIsEdit(true)} className="toc__addButtons">
-          Add a chapter
+          Add an excercise
         </button>
         <p>or</p>
-        <button className="toc__addButtons">Add multiple chapters</button>
+        <button className="toc__addButtons">Add multiple excercise</button>
       </div>
     </div>
   );
 }
 
-export default TocCreation;
+export default TocChildren;
