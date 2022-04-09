@@ -4,13 +4,14 @@ import { useParams } from "react-router-dom";
 import { useStateValue } from "../../StateProvider";
 import TocTable from "./TocTable";
 
-function TocQuestionChildren({ bookid }) {
-  const { exid } = useParams();
+function TocQuesPart({ bookid }) {
+  const { quesid } = useParams();
   const [{ accesstoken }] = useStateValue();
   const [tocData, setTocData] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [upId, setUpId] = useState();
-  const [quesState, setQuesState] = useState();
+  const [quesPartState, setQuesPartState] = useState();
+
   const editChapter = (id) => {
     setUpId(id);
   };
@@ -24,7 +25,7 @@ function TocQuestionChildren({ bookid }) {
   useEffect(() => {
     axios({
       method: "get",
-      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/children/${exid}`,
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/children/${quesid}`,
       headers: {
         "Content-Type": "application/json",
         accesstoken: accesstoken,
@@ -35,7 +36,7 @@ function TocQuestionChildren({ bookid }) {
         setTocData(res.data);
       })
       .catch((e) => console.log(e));
-  }, [accesstoken, bookid, exid, quesState]);
+  }, [accesstoken, bookid, quesid, quesPartState]);
 
   return (
     <div className="toc">
@@ -56,30 +57,30 @@ function TocQuestionChildren({ bookid }) {
               type={data.type}
               parentid={data.parentid}
               bookid={bookid}
-              setQuesState={setQuesState}
+              setQuesPartState={setQuesPartState}
             />
           </div>
         ))}
         {isEdit && (
           <TocTable
-            add="add"
-            type="question"
-            click={handleClick}
-            setQuesState={setQuesState}
-            id={exid}
+            type="question-part"
             bookid={bookid}
+            add="add"
+            click={handleClick}
+            setQuesPartState={setQuesPartState}
+            id={quesid}
           />
         )}
       </div>
       <div className="toc__addChapters">
         <button onClick={() => setIsEdit(true)} className="toc__addButtons">
-          Add a Question
+          Add a Question Part
         </button>
         <p>or</p>
-        <button className="toc__addButtons">Add multiple Question</button>
+        <button className="toc__addButtons">Add multiple Question Part</button>
       </div>
     </div>
   );
 }
 
-export default TocQuestionChildren;
+export default TocQuesPart;

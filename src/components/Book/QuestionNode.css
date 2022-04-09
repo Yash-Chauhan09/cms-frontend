@@ -1,0 +1,34 @@
+.question__heading {
+  font-size: 1.3rem;
+}
+.question__show {
+  margin: 1rem 0;
+  width: 100%;
+  background-color: #fff;
+  height: 150px;
+  padding: 2rem;
+  border-radius: 10px;
+  border-bottom: 2px solid #000;
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-between;
+}
+.question__editorButton {
+  margin: 1.2rem 0;
+}
+.question__editorButton button {
+  margin: 0 0.5rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  background-color: #353434;
+  font-size: 1rem;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.801);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.react-mathjax-preview-result span {
+  font-size: 1.5rem !important;
+}

@@ -7,6 +7,8 @@ import Book from "./components/Book/Book";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { useStateValue } from "./StateProvider";
 import { actionTypes } from "./reducer";
+import User from "./components/users/User";
+import ResetPass from "./components/login/ResetPass";
 // import Chapter from "./components/Book/Chapter";
 
 function App() {
@@ -42,6 +44,9 @@ function App() {
             img="https://srv-supersonic-images.z-dn.net/cover_images/606d6bff-07fe-4ce1-98fa-1308c37e9b3f.jpeg"
           />{" "}
         </Route>
+        <Route path="/user">
+          <User />
+        </Route>
         <Route path="/" exact>
           <Redirect to="/library" />
         </Route>
@@ -49,10 +54,13 @@ function App() {
     </div>
   ) : (
     <>
-      <Redirect to="/" />
+      <Route path="/reset-password/:token" exact={true}>
+        <ResetPass />
+      </Route>
       <Route path="/" exact={true}>
         <Login />
       </Route>
+      <Redirect to="/" />
     </>
   );
 }

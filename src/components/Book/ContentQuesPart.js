@@ -4,15 +4,15 @@ import { useParams } from "react-router-dom";
 import { useStateValue } from "../../StateProvider";
 import ContentTable from "./ContentTable";
 
-function ContentQuestionChildren({ bookid }) {
-  const { exid } = useParams();
+function ContentQuesPart({ bookid }) {
+  const { quesid } = useParams();
   const [{ accesstoken }] = useStateValue();
   const [content, setContent] = useState([]);
 
   useEffect(() => {
     axios({
       method: "get",
-      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/children/${exid}`,
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/children/${quesid}`,
       headers: {
         "Content-Type": "application/json",
         accesstoken: accesstoken,
@@ -23,7 +23,7 @@ function ContentQuestionChildren({ bookid }) {
         setContent(res.data);
       })
       .catch((e) => console.log(e));
-  }, [accesstoken, bookid, exid]);
+  }, [accesstoken, bookid, quesid]);
   return (
     <div className="toc">
       <div className="toc__top">
@@ -50,4 +50,4 @@ function ContentQuestionChildren({ bookid }) {
   );
 }
 
-export default ContentQuestionChildren;
+export default ContentQuesPart;

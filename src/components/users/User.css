@@ -1,0 +1,54 @@
+.user {
+  background-color: #f5f8fa;
+  width: 100%;
+  padding: 2rem;
+  min-height: 100vh;
+}
+.user__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.user__top h2 {
+  font-size: 1.2rem;
+}
+.user__topButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 200px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  color: #fff;
+  background-color: #6c63ff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.user__topButton:hover {
+  background-color: #4b42f7;
+}
+.invitation__form {
+  display: flex;
+  flex-direction: column;
+}
+.invitation__form h2 {
+  margin: 1rem 0;
+  font-size: 1.2rem;
+}
+.MuiInput-root {
+  margin-bottom: 2rem !important;
+}
+.submitBtn {
+  background-color: #6c63ff !important;
+  color: #fff !important;
+  text-transform: capitalize !important;
+  transition: all 0.3s ease;
+}
+.submitBtn:hover {
+  background-color: #4b42f7 !important;
+}
+.user__body {
+  margin-top: 2rem;
+}

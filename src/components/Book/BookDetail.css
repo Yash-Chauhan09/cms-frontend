@@ -28,3 +28,24 @@
     width: 90%;
   }
 }
+.bookDetail button {
+  margin: 1rem 0;
+  margin-left: auto;
+  display: block;
+  padding: 0.5rem 2rem;
+  color: white;
+  background-color: rgb(53, 53, 202);
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 12px;
+}
+.book__detailFooter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.book__detailFooter button {
+  margin: 0 1rem;
+}

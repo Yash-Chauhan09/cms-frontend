@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./TocCreation.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import IconButton from "@mui/material/IconButton";
-import { Link, useParams, useRouteMatch } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 import axios from "axios";
 import { useStateValue } from "../../StateProvider";
 
@@ -22,16 +22,34 @@ function TocTable({
   bookid,
   nodeid,
   parentid,
+  deleteEx,
+  setState,
+  setChstate,
+  setQuesState,
+  setQuesPartState,
+  // chState,
 }) {
   const { url } = useRouteMatch();
+  // const history = useHistory();
   // const { exid } = useParams();
   const [{ accesstoken }] = useStateValue();
   const [ch, setCh] = useState();
   const [page, setPage] = useState();
   const [ex, setEx] = useState();
   const [expage, setExPage] = useState();
+  const [upex, setUpEx] = useState(chName);
+  const [upexpage, setUpExPage] = useState(pageNo);
+  const [ques, setQues] = useState();
+  const [quespage, setQuesPage] = useState();
+  const [upques, setUpQues] = useState(chName);
+  const [upquespage, setUpQuesPage] = useState(pageNo);
+  const [quespart, setQuesPart] = useState();
+  const [quespartpage, setQuesPartPage] = useState();
+  const [upquespart, setUpQuesPart] = useState(chName);
+  const [upquespartpage, setUpQuesPartPage] = useState(pageNo);
   const [upch, setUpch] = useState(chName);
   const [upPage, setUpPage] = useState(pageNo);
+
   const addChapter = () => {
     let content = {
       type: "chapter",
@@ -54,14 +72,15 @@ function TocTable({
       .then((res) => {
         console.log(res);
         click();
+        setChstate(res.data.success);
       })
       .catch((e) => console.log(e));
   };
-  const addExercise = () => {
-    console.log(id);
+  const addExercise = (id) => {
+    // console.log(parentid);
     let content = {
       type: "exercise",
-      parentid: bookid,
+      parentid: id,
       bookid: bookid,
       name: ex,
       page: expage,
@@ -70,7 +89,7 @@ function TocTable({
     };
     axios({
       method: "post",
-      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${id}`,
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/children/${id}`,
       data: content,
       headers: {
         "Content-Type": "application/json",
@@ -79,6 +98,61 @@ function TocTable({
     })
       .then((res) => {
         console.log(res);
+        setState(res);
+        click();
+      })
+      .catch((e) => console.log(e));
+  };
+  const addQuestion = (id) => {
+    // console.log(parentid);
+    let content = {
+      type: "question",
+      parentid: id,
+      bookid: bookid,
+      name: ques,
+      page: quespage,
+      question: "null",
+      answer: "null",
+    };
+    axios({
+      method: "post",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/children/${id}`,
+      data: content,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setQuesState(res);
+        click();
+      })
+      .catch((e) => console.log(e));
+  };
+  const addQuestionPart = (id) => {
+    // console.log(parentid);
+    let content = {
+      type: "question-part",
+      parentid: id,
+      bookid: bookid,
+      name: quespart,
+      page: quespartpage,
+      question: "null",
+      answer: "null",
+    };
+    axios({
+      method: "post",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/children/${id}`,
+      data: content,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setQuesPartState(res);
         click();
       })
       .catch((e) => console.log(e));
@@ -103,7 +177,87 @@ function TocTable({
       },
     })
       .then((res) => {
+        cancel();
         console.log(res);
+        setChstate(res);
+      })
+      .catch((e) => console.log(e));
+  };
+  const updateExercise = () => {
+    let content = {
+      type: "exercise",
+      parentid: parentid,
+      bookid: bookid,
+      name: upex,
+      page: upexpage,
+      question: "null",
+      answer: "null",
+    };
+    axios({
+      method: "put",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${nodeid}`,
+      data: content,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        cancel();
+        console.log(res);
+        setState(res);
+      })
+      .catch((e) => console.log(e));
+  };
+  const updateQuestion = () => {
+    let content = {
+      type: "question",
+      parentid: parentid,
+      bookid: bookid,
+      name: upques,
+      page: upquespage,
+      question: "null",
+      answer: "null",
+    };
+    axios({
+      method: "put",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${id}`,
+      data: content,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        cancel();
+        console.log(res);
+        setQuesState(res);
+      })
+      .catch((e) => console.log(e));
+  };
+  const updateQuestionPart = () => {
+    let content = {
+      type: "question-part",
+      parentid: parentid,
+      bookid: bookid,
+      name: upquespart,
+      page: upquespartpage,
+      question: "null",
+      answer: "null",
+    };
+    axios({
+      method: "put",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${id}`,
+      data: content,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        cancel();
+        console.log(res);
+        setQuesPartState(res);
       })
       .catch((e) => console.log(e));
   };
@@ -119,6 +273,37 @@ function TocTable({
     })
       .then((res) => {
         console.log(res);
+        setChstate(res);
+      })
+      .catch((e) => console.log(e));
+  };
+  const deleteQuestion = () => {
+    axios({
+      method: "delete",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setQuesState(res);
+      })
+      .catch((e) => console.log(e));
+  };
+  const deleteQuesPart = () => {
+    axios({
+      method: "delete",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setQuesPartState(res);
       })
       .catch((e) => console.log(e));
   };
@@ -272,14 +457,22 @@ function TocTable({
             <div className="toc__dataLeft">
               <div className="toc__inpName">
                 <h5>EX</h5>
-                <input type="text" defaultValue={chName} />
+                <input
+                  type="text"
+                  value={upex}
+                  onChange={(e) => setUpEx(e.target.value)}
+                />
               </div>
               <div className="toc__inpPage">
-                <input type="number" defaultValue={pageNo} />
+                <input
+                  type="number"
+                  value={upexpage}
+                  onChange={(e) => setUpExPage(e.target.value)}
+                />
               </div>
             </div>
             <div className="toc__dataButton">
-              <button>Save</button>
+              <button onClick={() => updateExercise()}>Save</button>
               <button onClick={cancel}>Cancel</button>
             </div>
           </>
@@ -310,7 +503,7 @@ function TocTable({
                   }}
                 />
               </IconButton>
-              <IconButton>
+              <IconButton onClick={() => deleteEx(nodeid)}>
                 <DeleteIcon
                   style={{
                     fontSize: "1.5rem",
@@ -351,14 +544,24 @@ function TocTable({
         <div className="toc__dataLeft">
           <div className="toc__inpName">
             <h5>Q</h5>
-            <input type="text" placeholder="Name" />
+            <input
+              type="text"
+              placeholder="Name"
+              onChange={(e) => setQues(e.target.value)}
+              value={ques}
+            />
           </div>
           <div className="toc__inpPage">
-            <input type="number" placeholder="Page" />
+            <input
+              type="number"
+              placeholder="Page"
+              onChange={(e) => setQuesPage(e.target.value)}
+              value={quespage}
+            />
           </div>
         </div>
         <div className="toc__dataButton">
-          <button>Save</button>
+          <button onClick={() => addQuestion(id)}>Save</button>
           <button onClick={click}>Cancel</button>
         </div>
       </div>
@@ -369,14 +572,22 @@ function TocTable({
             <div className="toc__dataLeft">
               <div className="toc__inpName">
                 <h5>Q</h5>
-                <input type="text" defaultValue={chName} />
+                <input
+                  type="text"
+                  value={upques}
+                  onChange={(e) => setUpQues(e.target.value)}
+                />
               </div>
               <div className="toc__inpPage">
-                <input type="number" defaultValue={pageNo} />
+                <input
+                  type="number"
+                  value={upquespage}
+                  onChange={(e) => setUpQuesPage(e.target.value)}
+                />
               </div>
             </div>
             <div className="toc__dataButton">
-              <button>Save</button>
+              <button onClick={() => updateQuestion()}>Save</button>
               <button onClick={cancel}>Cancel</button>
             </div>
           </>
@@ -407,7 +618,117 @@ function TocTable({
                   }}
                 />
               </IconButton>
+              <IconButton onClick={() => deleteQuestion()}>
+                <DeleteIcon
+                  style={{
+                    fontSize: "1.5rem",
+                    color: "grey",
+                    margin: "0 0.6rem",
+                    cursor: "pointer",
+                  }}
+                />
+              </IconButton>
               <IconButton>
+                <BarChartIcon
+                  style={{
+                    fontSize: "1.5rem",
+                    color: "grey",
+                    margin: "0 0.6rem",
+                    cursor: "pointer",
+                  }}
+                />{" "}
+              </IconButton>
+              <IconButton>
+                <MoreVertIcon
+                  style={{
+                    fontSize: "1.5rem",
+                    color: "grey",
+                    margin: "0 0.6rem",
+                    cursor: "pointer",
+                  }}
+                />
+              </IconButton>
+            </div>
+          </>
+        )}
+      </>
+    );
+  } else if (type === "question-part") {
+    return add ? (
+      <div className="toc__data">
+        <div className="toc__dataLeft">
+          <div className="toc__inpName">
+            <h5>QP</h5>
+            <input
+              type="text"
+              placeholder="Name"
+              onChange={(e) => setQuesPart(e.target.value)}
+              value={quespart}
+            />
+          </div>
+          <div className="toc__inpPage">
+            <input
+              type="number"
+              placeholder="Page"
+              onChange={(e) => setQuesPartPage(e.target.value)}
+              value={quespartpage}
+            />
+          </div>
+        </div>
+        <div className="toc__dataButton">
+          <button onClick={() => addQuestionPart(id)}>Save</button>
+          <button onClick={click}>Cancel</button>
+        </div>
+      </div>
+    ) : (
+      <>
+        {id === updatedId ? (
+          <>
+            <div className="toc__dataLeft">
+              <div className="toc__inpName">
+                <h5>QP</h5>
+                <input
+                  type="text"
+                  onChange={(e) => setUpQuesPart(e.target.value)}
+                  value={upquespart}
+                />
+              </div>
+              <div className="toc__inpPage">
+                <input
+                  type="number"
+                  onChange={(e) => setUpQuesPartPage(e.target.value)}
+                  value={upquespartpage}
+                />
+              </div>
+            </div>
+            <div className="toc__dataButton">
+              <button onClick={() => updateQuestionPart()}>Save</button>
+              <button onClick={cancel}>Cancel</button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="toc__dataLeft">
+              <div className="toc__dataName">
+                <h5>QP</h5>
+                <h4>{chName}</h4>
+              </div>
+              <div className="toc__dataPage">
+                <p>{pageNo}</p>
+              </div>
+            </div>
+            <div className="toc__dataRight">
+              <IconButton onClick={() => onEdit(id)}>
+                <EditIcon
+                  style={{
+                    fontSize: "1.5rem",
+                    color: "grey",
+                    margin: "0 0.6rem",
+                    cursor: "pointer",
+                  }}
+                />
+              </IconButton>
+              <IconButton onClick={() => deleteQuesPart()}>
                 <DeleteIcon
                   style={{
                     fontSize: "1.5rem",
@@ -446,3 +767,7 @@ function TocTable({
 }
 
 export default TocTable;
+// {
+//   "email":"ramavtar@freeco.co.in",
+//   "password":"9509650330"
+// }

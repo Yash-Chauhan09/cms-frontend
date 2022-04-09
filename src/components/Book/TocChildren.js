@@ -10,7 +10,8 @@ function TocChildren({ bookid }) {
   const [tocData, setTocData] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [upId, setUpId] = useState();
-  const [question, setQuestion] = useState([]);
+  // const [question, setQuestion] = useState([]);
+  const [state, setState] = useState("");
 
   const editChapter = (id) => {
     setUpId(id);
@@ -21,6 +22,21 @@ function TocChildren({ bookid }) {
   const handleCancel = () => {
     setUpId(null);
     console.log(upId);
+  };
+  const deleteEx = (id) => {
+    axios({
+      method: "delete",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        setState("changed");
+      })
+      .catch((e) => console.log(e));
   };
   useEffect(() => {
     axios({
@@ -36,7 +52,8 @@ function TocChildren({ bookid }) {
         setTocData(res.data);
       })
       .catch((e) => console.log(e));
-  }, [accesstoken, bookid]);
+  }, [accesstoken, bookid, state]);
+
   return (
     <div className="toc">
       <div className="toc__top">
@@ -57,16 +74,23 @@ function TocChildren({ bookid }) {
               parentid={data.parentid}
               bookid={bookid}
               nodeid={data.nodeid}
+              deleteEx={deleteEx}
+              state={state}
+              setState={setState}
+              // setIsEdit={setIsEdit}
             />
           </div>
         ))}
         {isEdit && (
           <TocTable
             add="add"
-            type={tocData[0].type}
+            type="exercise"
             click={handleClick}
-            bookid={tocData[0].bookid}
+            bookid={bookid}
             id={id}
+            state={state}
+            setState={setState}
+            // setIsEdit={setIsEdit}
           />
         )}
       </div>

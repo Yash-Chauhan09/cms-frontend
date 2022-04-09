@@ -40,7 +40,7 @@ const Data = [
     answer: "5",
   },
 ];
-function TocCreation({ tocData }) {
+function TocCreation({ tocData, bookid, setChstate, chstate }) {
   const [isEdit, setIsEdit] = useState(false);
   const [upId, setUpId] = useState();
 
@@ -74,15 +74,18 @@ function TocCreation({ tocData }) {
               parentid={data.parentid}
               nodeid={data.nodeid}
               bookid={data.bookid}
+              setChstate={setChstate}
+              chstate={chstate}
             />
           </div>
         ))}
         {isEdit && (
           <TocTable
             add="add"
-            type={tocData[0].type}
+            type="chapter"
             click={handleClick}
-            bookid={tocData[0].bookid}
+            bookid={bookid}
+            setChstate={setChstate}
           />
         )}
       </div>

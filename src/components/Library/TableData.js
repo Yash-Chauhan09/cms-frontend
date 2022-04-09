@@ -8,7 +8,6 @@ function TableData({
   board,
   classes,
   subject,
-  // country,
   language,
   id,
 }) {
@@ -19,7 +18,10 @@ function TableData({
         to={`/library/${id}`}
       >
         <td className="library__tableBody library__tableImg">
-          <img src={img} alt="t" />
+          <img
+            src={`https://drive.google.com/u/3/uc?id=${img}&export=download`}
+            alt="t"
+          />
           <span>{bookName}</span>
         </td>
       </Link>

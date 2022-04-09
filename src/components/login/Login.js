@@ -24,16 +24,20 @@ function Login() {
       },
     })
       .then((res) => {
-        console.log(res);
-        dispatch({
-          type: actionTypes.SET_USER,
-          user: res.data.email,
-          userRole: res.data.role,
-          accesstoken: res.data.accessToken,
-        });
-        localStorage.setItem("token", res.data.accessToken);
-        localStorage.setItem("user", res.data.email);
-        localStorage.setItem("role", res.data.role);
+        // console.log(res);
+        if (res.data.accessToken) {
+          dispatch({
+            type: actionTypes.SET_USER,
+            user: res.data.email,
+            userRole: res.data.role,
+            accesstoken: res.data.accessToken,
+          });
+          localStorage.setItem("token", res.data.accessToken);
+          localStorage.setItem("user", res.data.email);
+          localStorage.setItem("role", res.data.role);
+        } else {
+          console.log(res);
+        }
       })
       .catch((e) => console.log(e));
   };

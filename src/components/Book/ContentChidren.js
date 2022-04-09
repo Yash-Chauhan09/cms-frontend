@@ -41,6 +41,7 @@ function ContentChidren({ bookid }) {
               question={data.question}
               answer={data.answer}
               totalNo={content.length}
+              bookid={bookid}
             />
           </div>
         ))}

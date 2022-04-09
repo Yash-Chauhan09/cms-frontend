@@ -1,6 +1,6 @@
 import React from "react";
 import "./Sidebar.css";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import PersonIcon from "@mui/icons-material/Person";
@@ -10,8 +10,7 @@ import axios from "axios";
 import { actionTypes } from "../../reducer";
 // import ShowChartIcon from "@mui/icons-material/ShowChart";
 function Sidebar() {
-  const [{ accesstoken }, dispatch] = useStateValue();
-  const history = useHistory();
+  const [{ accesstoken, userRole }, dispatch] = useStateValue();
   const handleLogOut = () => {
     axios({
       method: "get",
@@ -23,7 +22,6 @@ function Sidebar() {
     })
       .then((res) => {
         console.log(res);
-
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("role");
@@ -46,10 +44,12 @@ function Sidebar() {
         <AccountBalanceWalletIcon />
         <p>Booklets</p>
       </NavLink>
-      <NavLink exact activeClassName="sidebar__active" to="/user">
-        <PersonIcon />
-        <p>Users</p>
-      </NavLink>
+      {userRole === "admin" && (
+        <NavLink exact activeClassName="sidebar__active" to="/user">
+          <PersonIcon />
+          <p>Users</p>
+        </NavLink>
+      )}
       <div className="logout" onClick={() => handleLogOut()}>
         <LogoutIcon />
         <p>Logout</p>

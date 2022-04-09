@@ -1,42 +1,75 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { useStateValue } from "../../StateProvider";
 import "./BookDetail.css";
 
-function BookDetail({ bookdetail }) {
-  const [user, setUser] = useState("");
-  const handleDisabale = () => {
-    if (user === "") {
-      return true;
-    } else {
-      return false;
-    }
+function BookDetail({ bookdetail, setChstate, bookid }) {
+  const [{ accesstoken, userRole }] = useStateValue();
+  const [editInp, setEditInp] = useState(true);
+  const [btn, setBtn] = useState(false);
+  const [title, setTitle] = useState(bookdetail.title);
+  const [author, setAuthor] = useState(bookdetail.author);
+  const [isbn, setIsbn] = useState(bookdetail.isbn);
+  const [description, setDescription] = useState(bookdetail.description);
+  const [publisher, setPublisher] = useState(bookdetail.publisher);
+  const [board, setBoard] = useState(bookdetail.board);
+  const [subject, setSubject] = useState(bookdetail.subject);
+  const [classes, setClasses] = useState(bookdetail.class);
+  const [lang, setLang] = useState(bookdetail.lang);
+  const [type, setType] = useState(bookdetail.type);
+  const [edition, setEdition] = useState(bookdetail.edition);
+  const [cover, setCover] = useState(bookdetail.cover);
+  const EditBook = () => {
+    setBtn(true);
+    setEditInp(false);
+  };
+  const CancelEdit = () => {
+    setBtn(false);
+    setEditInp(true);
+  };
+  const editBook = () => {
+    let content = {
+      author: author,
+      board: board,
+      class: classes,
+      cover: cover,
+      description: description,
+      edition: edition,
+      isbn: isbn,
+      lang: lang,
+      other_tags: bookdetail.other_tags,
+      published: bookdetail.published,
+      publisher: publisher,
+      subject: subject,
+      title: title,
+      type: type,
+    };
+    axios({
+      method: "put",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}`,
+      data: content,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        setChstate(res);
+        setBtn(false);
+        setEditInp(true);
+      })
+      .catch((e) => console.log(e));
   };
   return (
     <div className="bookDetail">
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <p>Book type: </p>
-        <input type="radio" id="html" name="fav_language" value="Textbook" /> 
-        <label htmlFor="Textbook">Textbook</label>
-          <input type="radio" id="css" name="fav_language" value="Exams" /> 
-        <label htmlFor="Exams">Exams</label>
-        <input
-          type="radio"
-          id="Tests"
-          name="fav_language"
-          value="Tests"
-        />  <label htmlFor="Tests">Tests</label>
-      </div>
-      <br />
+      {userRole === "admin" && <button onClick={() => EditBook()}>Edit</button>}
       <p>Book title</p>
       <input
         className="bookDetail__data"
         type="text"
-        defaultValue={bookdetail.title}
-        disabled={handleDisabale()}
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        disabled={editInp}
       />
       <br />
       <br />
@@ -52,8 +85,9 @@ function BookDetail({ bookdetail }) {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={bookdetail.author}
-            disabled={handleDisabale()}
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            disabled={editInp}
           />
         </div>
         <div style={{ width: "30%" }}>
@@ -61,8 +95,9 @@ function BookDetail({ bookdetail }) {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={bookdetail.isbn}
-            disabled={handleDisabale()}
+            value={isbn}
+            onChange={(e) => setIsbn(e.target.value)}
+            disabled={editInp}
           />
         </div>
       </div>
@@ -71,8 +106,9 @@ function BookDetail({ bookdetail }) {
       <input
         className="bookDetail__data"
         type="text"
-        defaultValue={bookdetail.description}
-        disabled={handleDisabale()}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        disabled={editInp}
       />
       <br />
       <br />
@@ -82,37 +118,32 @@ function BookDetail({ bookdetail }) {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={bookdetail.publisher}
-            disabled={handleDisabale()}
+            value={publisher}
+            onChange={(e) => setPublisher(e.target.value)}
+            disabled={editInp}
           />
         </div>
         <div style={{ width: "30%" }}>
-          <p>Publish year</p>
+          <p>Type</p>
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={bookdetail.published}
-            disabled={handleDisabale()}
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            disabled={editInp}
           />
         </div>
       </div>
       <br />
       <div>
-        <p>Edition (optional)</p>
+        <p>Edition</p>
         <input
           className="bookDetail__data"
           type="text"
-          defaultValue={bookdetail.edition}
-          disabled={handleDisabale()}
+          value={edition}
+          onChange={(e) => setEdition(e.target.value)}
+          disabled={editInp}
         />
-      </div>
-      <br />
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <p>Visibility of questions: </p>
-        <input type="radio" id="html" name="fav_language" value="Yes" /> 
-        <label htmlFor="Yes">Yes</label>
-          <input type="radio" id="css" name="fav_language" value="No" /> 
-        <label htmlFor="No">No</label>
       </div>
       <br />
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -121,8 +152,9 @@ function BookDetail({ bookdetail }) {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={bookdetail.board}
-            disabled={handleDisabale()}
+            value={board}
+            onChange={(e) => setBoard(e.target.value)}
+            disabled={editInp}
           />
         </div>
         <div style={{ width: "50%" }}>
@@ -130,8 +162,9 @@ function BookDetail({ bookdetail }) {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={bookdetail.subject}
-            disabled={handleDisabale()}
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            disabled={editInp}
           />
         </div>
       </div>
@@ -142,8 +175,9 @@ function BookDetail({ bookdetail }) {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={bookdetail.class}
-            disabled={handleDisabale()}
+            value={classes}
+            onChange={(e) => setClasses(e.target.value)}
+            disabled={editInp}
           />
         </div>
         <div style={{ width: "50%" }}>
@@ -151,21 +185,30 @@ function BookDetail({ bookdetail }) {
           <input
             className="bookDetail__data"
             type="text"
-            defaultValue={bookdetail.lang}
-            disabled={handleDisabale()}
+            value={lang}
+            onChange={(e) => setLang(e.target.value)}
+            disabled={editInp}
           />
         </div>
       </div>
       <br />
-      <div>
-        <p>Topic (optional)</p>
-        <input
-          className="bookDetail__data"
-          type="text"
-          defaultValue={"Accounting"}
-          disabled={handleDisabale()}
-        />
-      </div>
+      <p>Cover url</p>
+      <input
+        className="bookDetail__data"
+        type="text"
+        value={cover}
+        onChange={(e) => setCover(e.target.value)}
+        disabled={editInp}
+      />
+      <br />
+      <br />
+      {btn && (
+        <div className="book__detailFooter">
+          {" "}
+          <button onClick={() => editBook()}>Submit</button>{" "}
+          <button onClick={() => CancelEdit()}>Cancel</button>{" "}
+        </div>
+      )}
     </div>
   );
 }

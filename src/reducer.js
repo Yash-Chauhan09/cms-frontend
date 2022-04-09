@@ -2,6 +2,7 @@ export const initialState = {
   user: null,
   token: null,
   userRole: null,
+  state: null,
 };
 export const actionTypes = {
   SET_USER: "SET_USER",
@@ -15,6 +16,7 @@ const reducer = (state, action) => {
         user: action.user,
         accesstoken: action.accesstoken,
         userRole: action.userRole,
+        state: action.state,
       };
     default:
       return state;
