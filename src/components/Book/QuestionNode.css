@@ -32,3 +32,19 @@
 .react-mathjax-preview-result span {
   font-size: 1.5rem !important;
 }
+.question__mcq {
+  width: 100%;
+  padding: 0.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid rgba(0, 0, 0, 0.575);
+  border-radius: 10px;
+  margin: 0.5rem 0;
+}
+.question__mcq h4,
+.question__mcq h5 {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}

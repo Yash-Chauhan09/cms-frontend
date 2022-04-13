@@ -29,8 +29,7 @@
   }
 }
 .bookDetail button {
-  margin: 1rem 0;
-  margin-left: auto;
+  margin: 0.5rem 1rem;
   display: block;
   padding: 0.5rem 2rem;
   color: white;
@@ -40,6 +39,9 @@
   cursor: pointer;
   font-weight: 600;
   border-radius: 12px;
+}
+.delete__btn {
+  background-color: rgb(212, 24, 24) !important;
 }
 .book__detailFooter {
   display: flex;

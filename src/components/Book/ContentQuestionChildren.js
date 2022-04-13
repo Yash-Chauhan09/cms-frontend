@@ -19,7 +19,7 @@ function ContentQuestionChildren({ bookid }) {
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setContent(res.data);
       })
       .catch((e) => console.log(e));

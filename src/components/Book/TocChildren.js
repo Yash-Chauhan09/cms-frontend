@@ -21,7 +21,7 @@ function TocChildren({ bookid }) {
   };
   const handleCancel = () => {
     setUpId(null);
-    console.log(upId);
+    // console.log(upId);
   };
   const deleteEx = (id) => {
     axios({
@@ -33,7 +33,7 @@ function TocChildren({ bookid }) {
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setState("changed");
       })
       .catch((e) => console.log(e));
@@ -48,11 +48,11 @@ function TocChildren({ bookid }) {
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setTocData(res.data);
       })
       .catch((e) => console.log(e));
-  }, [accesstoken, bookid, state]);
+  }, [accesstoken, bookid, state, id]);
 
   return (
     <div className="toc">

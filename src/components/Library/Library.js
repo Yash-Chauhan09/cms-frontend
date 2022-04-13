@@ -138,7 +138,7 @@ function Library() {
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         handleClose();
         setState(res);
       })
@@ -172,7 +172,7 @@ function Library() {
             <div className="invitation__input">
               {" "}
               <Input
-                placeholder="Enter sbject"
+                placeholder="Enter subject"
                 type="text"
                 value={subject}
                 onChange={(e) => {
@@ -325,15 +325,17 @@ function Library() {
         </div>
       </div>
       <table className="library__table">
-        <tr>
-          <th className="library__tableHead">Book</th>
-          <th className="library__tableHead">ISBN</th>
-          <th className="library__tableHead">Board</th>
-          <th className="library__tableHead">Class</th>
-          <th className="library__tableHead">Subject</th>
-          <th className="library__tableHead">Language</th>
-        </tr>
-        {displayTables}
+        <tbody>
+          <tr>
+            <th className="library__tableHead">Book</th>
+            <th className="library__tableHead">ISBN</th>
+            <th className="library__tableHead">Board</th>
+            <th className="library__tableHead">Class</th>
+            <th className="library__tableHead">Subject</th>
+            <th className="library__tableHead">Language</th>
+          </tr>
+          {displayTables}
+        </tbody>
       </table>
       <div className="library__foter">
         <ReactPaginate

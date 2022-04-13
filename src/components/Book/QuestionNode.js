@@ -6,14 +6,25 @@ import "./QuestionNode.css";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import ClassicEditor from "ckeditor5-classic-with-mathtype";
-import ckeditor, { CKEditor } from "@ckeditor/ckeditor5-react";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 import MathJax from "react-mathjax-preview";
-
+let quesData = {};
 function QuestionNode({ bookid }) {
   const { quesnode } = useParams();
   const [{ accesstoken }] = useStateValue();
   const [question, setQuestion] = useState({});
   const [showEdit, setShowEdit] = useState(false);
+  const [showMultiple, setShowMultiple] = useState(false);
+  const [mcqQues, setMcqQues] = useState(false);
+  const [opt1, setOpt1] = useState(false);
+  const [opt2, setOpt2] = useState(false);
+  const [opt3, setOpt3] = useState(false);
+  const [opt4, setOpt4] = useState(false);
+  const [mques, setMques] = useState(``);
+  const [opt1Data, setOption1Data] = useState(``);
+  const [opt2Data, setOption2Data] = useState(``);
+  const [opt3Data, setOption3Data] = useState(``);
+  const [opt4Data, setOption4Data] = useState(``);
   // const [questionshow, setQuestionShow] = useState("Add Question");
   const [questionval, setQuestionVal] = useState("");
   const [state, setState] = useState();
@@ -27,22 +38,35 @@ function QuestionNode({ bookid }) {
       },
     })
       .then((res) => {
-        console.log(res);
         setState("");
         setQuestion(res.data);
+        if (res.data.question === "null") {
+          quesData = {};
+        } else {
+          const str = res.data.question;
+          quesData = JSON.parse(str.substring(1, str.length - 1));
+          setMques(quesData.question);
+          setOption1Data(quesData.optiona);
+          setOption2Data(quesData.optionb);
+          setOption3Data(quesData.optionc);
+          setOption4Data(quesData.optiond);
+        }
       })
       .catch((e) => console.log(e));
   }, [bookid, quesnode, accesstoken, state]);
   const handleAddQuestion = () => {
-    console.log(question.parentid);
+    quesData.type = "paragraph";
+    quesData.question = questionval;
+    let data = "null";
+    data = JSON.stringify(JSON.stringify(quesData));
     let content = {
       type: question.type,
       parentid: question.parentid,
       bookid: bookid,
       name: question.name,
       page: question.page,
-      question: questionval,
-      answer: "null",
+      question: data,
+      answer: question.answer,
     };
     axios({
       method: "put",
@@ -54,15 +78,66 @@ function QuestionNode({ bookid }) {
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setShowEdit(false);
         setQuestionVal("");
         setState(res);
       })
       .catch((e) => console.log(e));
   };
-  const math = String.raw`${question.question}`;
-  if (question.question === "null") {
+  const handleAddMcq = () => {
+    quesData.type = "mcq";
+    quesData.question = mques;
+    quesData.optiona = opt1Data;
+    quesData.optionb = opt2Data;
+    quesData.optionc = opt3Data;
+    quesData.optiond = opt4Data;
+    let data = "null";
+    data = JSON.stringify(JSON.stringify(quesData));
+
+    let content = {
+      type: question.type,
+      parentid: question.parentid,
+      bookid: bookid,
+      name: question.name,
+      page: question.page,
+      question: data,
+      answer: question.answer,
+    };
+    axios({
+      method: "put",
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${quesnode}`,
+      data: content,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken: accesstoken,
+      },
+    })
+      .then((res) => {
+        // console.log(res);
+        setShowMultiple(false);
+        quesData = {};
+        setState(res);
+        setMcqQues(false);
+        setOpt1(false);
+        setOpt2(false);
+        setOpt3(false);
+        setOpt4(false);
+      })
+      .catch((e) => console.log(e));
+  };
+  const math = String.raw`${quesData.question}`;
+  const mcqQuestion = String.raw`${mques}`;
+  const opta = String.raw`${opt1Data}`;
+  const optb = String.raw`${opt2Data}`;
+  const optc = String.raw`${opt3Data}`;
+  const optd = String.raw`${opt4Data}`;
+  const resQues = String.raw`${quesData.question}`;
+  const resopta = String.raw`${quesData.optiona}`;
+  const resoptb = String.raw`${quesData.optionb}`;
+  const resoptc = String.raw`${quesData.optionc}`;
+  const resoptd = String.raw`${quesData.optiond}`;
+  if (!quesData.type) {
     return (
       <div className="questionNode">
         <h2 className="question__heading">Question</h2>
@@ -74,8 +149,255 @@ function QuestionNode({ bookid }) {
             >
               Add Question
             </h4>
+            <h4
+              onClick={() => setShowMultiple(true)}
+              style={{ cursor: "pointer", color: "blue" }}
+            >
+              Add Multiple Choice Question
+            </h4>
           </div>
         </div>
+        {showMultiple && (
+          <div className="question__editor">
+            <div className="question__mcq">
+              <h4 onClick={() => setMcqQues(true)}>
+                {mcqQuestion === "" ? (
+                  "Add Question"
+                ) : (
+                  <MathJax math={mcqQuestion} />
+                )}
+              </h4>
+            </div>
+            {mcqQues && (
+              <div className="question__editor">
+                <CKEditor
+                  editor={ClassicEditor}
+                  data=""
+                  config={{
+                    toolbar: {
+                      items: [
+                        "heading",
+                        "MathType",
+                        "ChemType",
+                        "|",
+                        "bold",
+                        "italic",
+                        "link",
+                        "bulletedList",
+                        "numberedList",
+                        "imageUpload",
+                        "mediaEmbed",
+                        "insertTable",
+                        "blockQuote",
+                        "undo",
+                        "redo",
+                      ],
+                    },
+                  }}
+                  onReady={(editor) => {
+                    // You can store the "editor" and use when it is needed.
+                    // console.log("Editor is ready to use!", editor);
+                  }}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                    // console.log(data);
+                    setMques(data);
+                    // console.log(mques);
+                  }}
+                />
+                <div className="question__editorButton">
+                  <button onClick={() => setMcqQues(false)}>Save</button>
+                </div>
+              </div>
+            )}
+            <div className="question__options">
+              <div className="question__option question__mcq">
+                <h5 onClick={() => setOpt1(true)}>
+                  {opta === "" ? "Option a" : <MathJax math={opta} />}
+                </h5>
+              </div>
+              {opt1 && (
+                <div className="question__editor">
+                  <CKEditor
+                    editor={ClassicEditor}
+                    data=""
+                    config={{
+                      toolbar: {
+                        items: [
+                          "heading",
+                          "MathType",
+                          "ChemType",
+                          "|",
+                          "bold",
+                          "italic",
+                          "link",
+                          "bulletedList",
+                          "numberedList",
+                          "imageUpload",
+                          "mediaEmbed",
+                          "insertTable",
+                          "blockQuote",
+                          "undo",
+                          "redo",
+                        ],
+                      },
+                    }}
+                    onReady={(editor) => {
+                      // You can store the "editor" and use when it is needed.
+                      // console.log("Editor is ready to use!", editor);
+                    }}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      setOption1Data(data);
+                    }}
+                  />
+                  <div className="question__editorButton">
+                    <button onClick={() => setOpt1(false)}>Save</button>
+                  </div>
+                </div>
+              )}
+              <div className="question__option question__mcq">
+                <h5 onClick={() => setOpt2(true)}>
+                  {optb === "" ? "Option b" : <MathJax math={optb} />}
+                </h5>
+              </div>
+              {opt2 && (
+                <div className="question__editor">
+                  <CKEditor
+                    editor={ClassicEditor}
+                    data=""
+                    config={{
+                      toolbar: {
+                        items: [
+                          "heading",
+                          "MathType",
+                          "ChemType",
+                          "|",
+                          "bold",
+                          "italic",
+                          "link",
+                          "bulletedList",
+                          "numberedList",
+                          "imageUpload",
+                          "mediaEmbed",
+                          "insertTable",
+                          "blockQuote",
+                          "undo",
+                          "redo",
+                        ],
+                      },
+                    }}
+                    onReady={(editor) => {
+                      // You can store the "editor" and use when it is needed.
+                      // console.log("Editor is ready to use!", editor);
+                    }}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      setOption2Data(data);
+                    }}
+                  />
+                  <div className="question__editorButton">
+                    <button onClick={() => setOpt2(false)}>Save</button>
+                  </div>
+                </div>
+              )}
+              <div className="question__option question__mcq">
+                <h5 onClick={() => setOpt3(true)}>
+                  {optc === "" ? "Option c" : <MathJax math={optc} />}
+                </h5>
+              </div>
+              {opt3 && (
+                <div className="question__editor">
+                  <CKEditor
+                    editor={ClassicEditor}
+                    data=""
+                    config={{
+                      toolbar: {
+                        items: [
+                          "heading",
+                          "MathType",
+                          "ChemType",
+                          "|",
+                          "bold",
+                          "italic",
+                          "link",
+                          "bulletedList",
+                          "numberedList",
+                          "imageUpload",
+                          "mediaEmbed",
+                          "insertTable",
+                          "blockQuote",
+                          "undo",
+                          "redo",
+                        ],
+                      },
+                    }}
+                    onReady={(editor) => {
+                      // You can store the "editor" and use when it is needed.
+                      // console.log("Editor is ready to use!", editor);
+                    }}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      setOption3Data(data);
+                    }}
+                  />
+                  <div className="question__editorButton">
+                    <button onClick={() => setOpt3(false)}>Save</button>
+                  </div>
+                </div>
+              )}
+              <div className="question__option question__mcq">
+                <h5 onClick={() => setOpt4(true)}>
+                  {optd === "" ? "Option d" : <MathJax math={optd} />}
+                </h5>
+              </div>
+              {opt4 && (
+                <div className="question__editor">
+                  <CKEditor
+                    editor={ClassicEditor}
+                    data=""
+                    config={{
+                      toolbar: {
+                        items: [
+                          "heading",
+                          "MathType",
+                          "ChemType",
+                          "|",
+                          "bold",
+                          "italic",
+                          "link",
+                          "bulletedList",
+                          "numberedList",
+                          "imageUpload",
+                          "mediaEmbed",
+                          "insertTable",
+                          "blockQuote",
+                          "undo",
+                          "redo",
+                        ],
+                      },
+                    }}
+                    onReady={(editor) => {
+                      // You can store the "editor" and use when it is needed.
+                      // console.log("Editor is ready to use!", editor);
+                    }}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      setOption4Data(data);
+                    }}
+                  />
+                  <div className="question__editorButton">
+                    <button onClick={() => setOpt4(false)}>Save</button>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="question__editorButton">
+              <button onClick={() => handleAddMcq()}>Save</button>
+              <button onClick={() => setShowMultiple(false)}>Cancel</button>
+            </div>
+          </div>
+        )}
         {showEdit && (
           <div className="question__editor">
             <CKEditor
@@ -108,7 +430,7 @@ function QuestionNode({ bookid }) {
               }}
               onChange={(event, editor) => {
                 const data = editor.getData();
-                console.log({ data });
+                // console.log({ data });
                 setQuestionVal(data);
               }}
             />
@@ -120,7 +442,7 @@ function QuestionNode({ bookid }) {
         )}
       </div>
     );
-  } else {
+  } else if (quesData.type === "paragraph") {
     return (
       <div className="questionNode">
         <h2 className="question__heading">Question</h2>
@@ -138,7 +460,7 @@ function QuestionNode({ bookid }) {
           <div className="question__editor">
             <CKEditor
               editor={ClassicEditor}
-              data={question.question}
+              data={quesData.question}
               config={{
                 toolbar: {
                   items: [
@@ -166,7 +488,7 @@ function QuestionNode({ bookid }) {
               }}
               onChange={(event, editor) => {
                 const data = editor.getData();
-                console.log({ data });
+                // console.log({ data });
                 setQuestionVal(data);
               }}
             />
@@ -176,6 +498,263 @@ function QuestionNode({ bookid }) {
             </div>
           </div>
         )}
+      </div>
+    );
+  } else if (quesData.type === "mcq") {
+    return (
+      <div className="question__editor">
+        <div className="question__mcq">
+          <h4>
+            <span>Q)</span>
+            <MathJax math={resQues} />
+          </h4>
+          <IconButton onClick={() => setMcqQues(true)}>
+            <EditIcon />
+          </IconButton>
+        </div>
+        {mcqQues && (
+          <div className="question__editor">
+            <CKEditor
+              editor={ClassicEditor}
+              data=""
+              config={{
+                toolbar: {
+                  items: [
+                    "heading",
+                    "MathType",
+                    "ChemType",
+                    "|",
+                    "bold",
+                    "italic",
+                    "link",
+                    "bulletedList",
+                    "numberedList",
+                    "imageUpload",
+                    "mediaEmbed",
+                    "insertTable",
+                    "blockQuote",
+                    "undo",
+                    "redo",
+                  ],
+                },
+              }}
+              onReady={(editor) => {
+                // You can store the "editor" and use when it is needed.
+                // console.log("Editor is ready to use!", editor);
+              }}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setMques(data);
+              }}
+            />
+            <div className="question__editorButton">
+              <button onClick={() => handleAddMcq()}>Save</button>
+              <button onClick={() => setMcqQues(false)}>Cancel</button>
+            </div>
+          </div>
+        )}
+        <div className="question__options">
+          <div className="question__option question__mcq">
+            <h5>
+              <span>A) </span>
+              <MathJax math={resopta} />
+            </h5>
+            <IconButton onClick={() => setOpt1(true)}>
+              <EditIcon />
+            </IconButton>
+          </div>
+          {opt1 && (
+            <div className="question__editor">
+              <CKEditor
+                editor={ClassicEditor}
+                data=""
+                config={{
+                  toolbar: {
+                    items: [
+                      "heading",
+                      "MathType",
+                      "ChemType",
+                      "|",
+                      "bold",
+                      "italic",
+                      "link",
+                      "bulletedList",
+                      "numberedList",
+                      "imageUpload",
+                      "mediaEmbed",
+                      "insertTable",
+                      "blockQuote",
+                      "undo",
+                      "redo",
+                    ],
+                  },
+                }}
+                onReady={(editor) => {
+                  // You can store the "editor" and use when it is needed.
+                  // console.log("Editor is ready to use!", editor);
+                }}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  setOption1Data(data);
+                }}
+              />
+              <div className="question__editorButton">
+                <button onClick={() => handleAddMcq()}>Save</button>
+                <button onClick={() => setOpt1(false)}>Cancel</button>
+              </div>
+            </div>
+          )}
+          <div className="question__option question__mcq">
+            <h5>
+              <span>B) </span>
+              <MathJax math={resoptb} />
+            </h5>
+            <IconButton onClick={() => setOpt2(true)}>
+              <EditIcon />
+            </IconButton>
+          </div>
+          {opt2 && (
+            <div className="question__editor">
+              <CKEditor
+                editor={ClassicEditor}
+                data=""
+                config={{
+                  toolbar: {
+                    items: [
+                      "heading",
+                      "MathType",
+                      "ChemType",
+                      "|",
+                      "bold",
+                      "italic",
+                      "link",
+                      "bulletedList",
+                      "numberedList",
+                      "imageUpload",
+                      "mediaEmbed",
+                      "insertTable",
+                      "blockQuote",
+                      "undo",
+                      "redo",
+                    ],
+                  },
+                }}
+                onReady={(editor) => {
+                  // You can store the "editor" and use when it is needed.
+                  // console.log("Editor is ready to use!", editor);
+                }}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  setOption2Data(data);
+                }}
+              />
+              <div className="question__editorButton">
+                <button onClick={() => handleAddMcq()}>Save</button>
+                <button onClick={() => setOpt2(false)}>Cancel</button>
+              </div>
+            </div>
+          )}
+          <div className="question__option question__mcq">
+            <h5>
+              <span>C) </span>
+              <MathJax math={resoptc} />
+            </h5>
+            <IconButton onClick={() => setOpt3(true)}>
+              <EditIcon />
+            </IconButton>
+          </div>
+          {opt3 && (
+            <div className="question__editor">
+              <CKEditor
+                editor={ClassicEditor}
+                data=""
+                config={{
+                  toolbar: {
+                    items: [
+                      "heading",
+                      "MathType",
+                      "ChemType",
+                      "|",
+                      "bold",
+                      "italic",
+                      "link",
+                      "bulletedList",
+                      "numberedList",
+                      "imageUpload",
+                      "mediaEmbed",
+                      "insertTable",
+                      "blockQuote",
+                      "undo",
+                      "redo",
+                    ],
+                  },
+                }}
+                onReady={(editor) => {
+                  // You can store the "editor" and use when it is needed.
+                  // console.log("Editor is ready to use!", editor);
+                }}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  setOption3Data(data);
+                }}
+              />
+              <div className="question__editorButton">
+                <button onClick={() => handleAddMcq()}>Save</button>
+                <button onClick={() => setOpt3(false)}>Cancel</button>
+              </div>
+            </div>
+          )}
+          <div className="question__option question__mcq">
+            <h5>
+              <span>D) </span>
+              <MathJax math={resoptd} />
+            </h5>
+            <IconButton onClick={() => setOpt4(true)}>
+              <EditIcon />
+            </IconButton>
+          </div>
+          {opt4 && (
+            <div className="question__editor">
+              <CKEditor
+                editor={ClassicEditor}
+                data=""
+                config={{
+                  toolbar: {
+                    items: [
+                      "heading",
+                      "MathType",
+                      "ChemType",
+                      "|",
+                      "bold",
+                      "italic",
+                      "link",
+                      "bulletedList",
+                      "numberedList",
+                      "imageUpload",
+                      "mediaEmbed",
+                      "insertTable",
+                      "blockQuote",
+                      "undo",
+                      "redo",
+                    ],
+                  },
+                }}
+                onReady={(editor) => {
+                  // You can store the "editor" and use when it is needed.
+                  // console.log("Editor is ready to use!", editor);
+                }}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  setOption4Data(data);
+                }}
+              />
+              <div className="question__editorButton">
+                <button onClick={() => handleAddMcq()}>Save</button>
+                <button onClick={() => setOpt4(false)}>Cancel</button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   }

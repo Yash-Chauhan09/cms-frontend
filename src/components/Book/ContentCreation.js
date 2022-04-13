@@ -3,44 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useStateValue } from "../../StateProvider";
 import ContentTable from "./ContentTable";
 import "./TocCreation.css";
-const Data = [
-  {
-    type: "chapter",
-    parentid: null,
-    bookid: "dwedew",
-    name: "Chapter 2 : Integers and Algebraic Expressions",
-    page: "85",
-    question: "2+3?",
-    answer: "5",
-  },
-  {
-    type: "chapter",
-    parentid: null,
-    bookid: "dwedew",
-    name: "Chapter 3 : Integers and Algebraic Expressions",
-    page: "85",
-    question: "2+3?",
-    answer: "5",
-  },
-  {
-    type: "chapter",
-    parentid: null,
-    bookid: "dwedew",
-    name: "Chapter 4 : Integers and Algebraic Expressions",
-    page: "85",
-    question: "2+3?",
-    answer: "5",
-  },
-  {
-    type: "chapter",
-    parentid: null,
-    bookid: "dwedew",
-    name: "Chapter 5 : Integers and Algebraic Expressions",
-    page: "85",
-    question: "2+3?",
-    answer: "5",
-  },
-];
+
 function ContentCreation({ bookid }) {
   // const [tocData, setTocData] = useState(Data);
   const [{ accesstoken }] = useStateValue();
@@ -56,7 +19,7 @@ function ContentCreation({ bookid }) {
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setContent(res.data.toc);
       })
       .catch((e) => console.log(e));

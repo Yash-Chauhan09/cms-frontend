@@ -57,7 +57,7 @@ function User() {
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setEmail("");
         setPassword("");
         setRole("");

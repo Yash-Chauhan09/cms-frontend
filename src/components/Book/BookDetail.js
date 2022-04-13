@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useStateValue } from "../../StateProvider";
 import "./BookDetail.css";
 
@@ -19,6 +20,7 @@ function BookDetail({ bookdetail, setChstate, bookid }) {
   const [type, setType] = useState(bookdetail.type);
   const [edition, setEdition] = useState(bookdetail.edition);
   const [cover, setCover] = useState(bookdetail.cover);
+  const history = useHistory();
   const EditBook = () => {
     setBtn(true);
     setEditInp(false);
@@ -60,9 +62,41 @@ function BookDetail({ bookdetail, setChstate, bookid }) {
       })
       .catch((e) => console.log(e));
   };
+  const deleteBook = () => {
+    if (window.confirm("Are you sure you want to delete this book")) {
+      axios({
+        method: "delete",
+        url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}`,
+        headers: {
+          "Content-Type": "application/json",
+          accesstoken: accesstoken,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          history.push("/");
+        })
+        .catch((e) => console.log(e));
+    } else {
+      console.log("saved");
+    }
+  };
   return (
     <div className="bookDetail">
-      {userRole === "admin" && <button onClick={() => EditBook()}>Edit</button>}
+      {userRole === "admin" && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
+          <button onClick={() => deleteBook()} className="delete__btn">
+            Delete
+          </button>
+          <button onClick={() => EditBook()}>Edit</button>
+        </div>
+      )}
       <p>Book title</p>
       <input
         className="bookDetail__data"

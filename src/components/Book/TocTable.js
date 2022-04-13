@@ -70,7 +70,7 @@ function TocTable({
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         click();
         setChstate(res.data.success);
       })
@@ -97,7 +97,7 @@ function TocTable({
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setState(res);
         click();
       })
@@ -124,7 +124,7 @@ function TocTable({
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setQuesState(res);
         click();
       })
@@ -151,7 +151,7 @@ function TocTable({
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setQuesPartState(res);
         click();
       })
@@ -178,7 +178,7 @@ function TocTable({
     })
       .then((res) => {
         cancel();
-        console.log(res);
+        // console.log(res);
         setChstate(res);
       })
       .catch((e) => console.log(e));
@@ -204,7 +204,7 @@ function TocTable({
     })
       .then((res) => {
         cancel();
-        console.log(res);
+        // console.log(res);
         setState(res);
       })
       .catch((e) => console.log(e));
@@ -230,7 +230,7 @@ function TocTable({
     })
       .then((res) => {
         cancel();
-        console.log(res);
+        // console.log(res);
         setQuesState(res);
       })
       .catch((e) => console.log(e));
@@ -256,7 +256,7 @@ function TocTable({
     })
       .then((res) => {
         cancel();
-        console.log(res);
+        // console.log(res);
         setQuesPartState(res);
       })
       .catch((e) => console.log(e));
@@ -272,7 +272,7 @@ function TocTable({
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setChstate(res);
       })
       .catch((e) => console.log(e));
@@ -287,7 +287,7 @@ function TocTable({
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setQuesState(res);
       })
       .catch((e) => console.log(e));
@@ -302,7 +302,7 @@ function TocTable({
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setQuesPartState(res);
       })
       .catch((e) => console.log(e));

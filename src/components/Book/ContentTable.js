@@ -11,9 +11,9 @@ function ContentTable({
   pageNo,
   id,
   type,
-  parentid,
-  question,
-  answer,
+  // parentid,
+  // question,
+  // answer,
   totalNo,
   bookid,
 }) {
@@ -30,7 +30,7 @@ function ContentTable({
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.length === 0) {
           history.push(`${url}/${id}/${id}`);
         } else {
@@ -50,7 +50,7 @@ function ContentTable({
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.length === 0) {
           history.push(`${url}/${id}/answer/${id}`);
         } else {

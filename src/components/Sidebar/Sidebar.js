@@ -21,7 +21,7 @@ function Sidebar() {
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("role");

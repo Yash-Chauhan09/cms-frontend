@@ -2,44 +2,6 @@ import React, { useState } from "react";
 // import { Link, Route, Switch } from "react-router-dom";
 import "./TocCreation.css";
 import TocTable from "./TocTable";
-const Data = [
-  {
-    type: "chapter",
-    parentid: null,
-    bookid: "dwedew",
-    name: "Chapter 2 : Integers and Algebraic Expressions",
-    page: "85",
-    question: "2+3?",
-    answer: "5",
-  },
-  {
-    type: "chapter",
-    parentid: null,
-    bookid: "dwedew",
-    name: "Chapter 3 : Integers and Algebraic Expressions",
-    page: "85",
-    question: "2+3?",
-    answer: "5",
-  },
-  {
-    type: "chapter",
-    parentid: null,
-    bookid: "dwedew",
-    name: "Chapter 4 : Integers and Algebraic Expressions",
-    page: "85",
-    question: "2+3?",
-    answer: "5",
-  },
-  {
-    type: "chapter",
-    parentid: null,
-    bookid: "dwedew",
-    name: "Chapter 5 : Integers and Algebraic Expressions",
-    page: "85",
-    question: "2+3?",
-    answer: "5",
-  },
-];
 function TocCreation({ tocData, bookid, setChstate, chstate }) {
   const [isEdit, setIsEdit] = useState(false);
   const [upId, setUpId] = useState();
@@ -52,7 +14,7 @@ function TocCreation({ tocData, bookid, setChstate, chstate }) {
   };
   const handleCancel = () => {
     setUpId(null);
-    console.log(upId);
+    // console.log(upId);
   };
   return (
     <div className="toc">

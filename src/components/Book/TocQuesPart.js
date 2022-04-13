@@ -20,7 +20,7 @@ function TocQuesPart({ bookid }) {
   };
   const handleCancel = () => {
     setUpId(null);
-    console.log(upId);
+    // console.log(upId);
   };
   useEffect(() => {
     axios({
@@ -32,7 +32,7 @@ function TocQuesPart({ bookid }) {
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setTocData(res.data);
       })
       .catch((e) => console.log(e));

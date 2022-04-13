@@ -4,11 +4,12 @@ import "./AnswerNode.css";
 import { useParams } from "react-router-dom";
 import { useStateValue } from "../../StateProvider";
 import MathJax from "react-mathjax-preview";
-import ckeditor, { CKEditor } from "@ckeditor/ckeditor5-react";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "ckeditor5-classic-with-mathtype";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 let answerVal = {};
+let questionVal = {};
 function AnswerNode({ bookid }) {
   const { quesnode } = useParams();
   const [{ accesstoken }] = useStateValue();
@@ -18,6 +19,7 @@ function AnswerNode({ bookid }) {
   const [expVal, setExpVal] = useState("");
   const [finalVal, setFinalVal] = useState("");
   const [state, setState] = useState("");
+  // const [questionVal, setQuestionVal] = useState({});
   // const [answerVal, setAnswerval] = useState({});
 
   useEffect(() => {
@@ -29,10 +31,24 @@ function AnswerNode({ bookid }) {
         accesstoken: accesstoken,
       },
     }).then((res) => {
+      // console.log(res);
+      // console.log(res.data.answer);
+
       if (res.data.answer === "null") {
         answerVal = {};
       } else {
-        answerVal = JSON.parse(res.data.answer);
+        const str = res.data.answer;
+        answerVal = JSON.parse(str.substring(1, str.length - 1));
+      }
+      if (res.data.question === "null") {
+        questionVal.question = "Null";
+      } else {
+        // console.log(questionVal);
+        const str2 = res.data.question;
+        questionVal = JSON.parse(str2.substring(1, str2.length - 1));
+        // const str2 = res.data.question;
+        // console.log(str2);
+        // questionVal = JSON.parse(str2.substring(1, str2.length - 1));
       }
       setResponse(res.data);
       setState("");
@@ -44,14 +60,15 @@ function AnswerNode({ bookid }) {
     //   return { ...prev, explaination: expVal, finalAns: finalVal };
     // });
     answerVal.explaination = expVal;
+    answerVal.type = "answer";
     let content = {
       type: response.type,
       parentid: response.parentid,
       bookid: bookid,
       name: response.name,
       page: response.page,
-      question: response.question,
-      answer: JSON.stringify(answerVal),
+      question: JSON.stringify(JSON.stringify(questionVal)),
+      answer: JSON.stringify(JSON.stringify(answerVal)),
     };
     axios({
       method: "put",
@@ -71,14 +88,16 @@ function AnswerNode({ bookid }) {
   };
   const handleAddFinalAns = () => {
     answerVal.final = finalVal;
+    answerVal.type = "answer";
+
     let content = {
       type: response.type,
       parentid: response.parentid,
       bookid: bookid,
       name: response.name,
       page: response.page,
-      question: response.question,
-      answer: JSON.stringify(answerVal),
+      question: JSON.stringify(JSON.stringify(questionVal)),
+      answer: JSON.stringify(JSON.stringify(answerVal)),
     };
     axios({
       method: "put",
@@ -96,17 +115,52 @@ function AnswerNode({ bookid }) {
     });
     // .catch((e) => console.log(e));
   };
-  const math = String.raw`${response.question}`;
+  const math = String.raw`${questionVal.question}`;
+  const opta = String.raw`${questionVal.optiona}`;
+  const optb = String.raw`${questionVal.optionb}`;
+  const optc = String.raw`${questionVal.optionc}`;
+  const optd = String.raw`${questionVal.optiond}`;
   const expAns = String.raw`${answerVal.explaination}`;
   const finalAns = String.raw`${answerVal.final}`;
+  const displayQuestion = () => {
+    if (questionVal.question === "Null") {
+      return "Null";
+    } else if (questionVal.type === "paragraph") {
+      return (
+        <>
+          <div className="answerNode__questionShow">
+            <MathJax math={math} />
+          </div>
+        </>
+      );
+    } else if (questionVal.type === "mcq") {
+      return (
+        <>
+          <div className="answerNode__questionShow">
+            <span>Q) </span> <MathJax math={math} />
+          </div>
+          <div className="answerNode__questionShow">
+            <span>a) </span> <MathJax math={opta} />
+          </div>
+          <div className="answerNode__questionShow">
+            <span>b) </span> <MathJax math={optb} />
+          </div>
+          <div className="answerNode__questionShow">
+            <span>c) </span> <MathJax math={optc} />
+          </div>
+          <div className="answerNode__questionShow">
+            <span>d) </span> <MathJax math={optd} />
+          </div>
+        </>
+      );
+    }
+  };
   if (response.answer === "null") {
     return (
       <div className="answerNode">
         <div className="answerNode__question">
           <h2>Question</h2>
-          <div className="answerNode__questionShow">
-            <MathJax math={math} />
-          </div>
+          {displayQuestion()}
         </div>
         <div className="answerNode__answers">
           <button className="btnAns" onClick={() => setShowExp(true)}>
@@ -213,9 +267,7 @@ function AnswerNode({ bookid }) {
       <div className="answerNode">
         <div className="answerNode__question">
           <h2>Question</h2>
-          <div className="answerNode__questionShow">
-            {<MathJax math={math} />}
-          </div>
+          {displayQuestion()}
         </div>
         <div className="answerNode__answers">
           <div className="answer__show">

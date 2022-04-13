@@ -61,7 +61,7 @@ function Book() {
       },
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setToc(res.data.toc);
         setBookInfo(res.data.book_info);
         setImg(res.data.book_info.cover);
