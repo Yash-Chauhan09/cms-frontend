@@ -116,7 +116,7 @@ function Book() {
           <AnswerNode bookid={bookid} />
         </Route>
         <Route path={`${path}/content-creation/:id/:exid/:quesid/:quesnode`}>
-          <QuestionNode bookid={bookid} />
+          <QuestionNode setChstate={setChstate} bookid={bookid} />
         </Route>
         <Route path={`${path}/content-creation/:id/:exid/:quesid`}>
           <ContentQuesPart bookid={bookid} />

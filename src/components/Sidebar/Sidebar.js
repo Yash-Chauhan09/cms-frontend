@@ -11,6 +11,7 @@ import { actionTypes } from "../../reducer";
 // import ShowChartIcon from "@mui/icons-material/ShowChart";
 function Sidebar() {
   const [{ accesstoken, userRole }, dispatch] = useStateValue();
+  // const history = useHistory();
   const handleLogOut = () => {
     axios({
       method: "get",
@@ -20,8 +21,7 @@ function Sidebar() {
         accesstoken: accesstoken,
       },
     })
-      .then((res) => {
-        // console.log(res);
+      .then(() => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("role");
@@ -31,6 +31,7 @@ function Sidebar() {
           userRole: null,
           accesstoken: null,
         });
+        // history.push("/");
       })
       .catch((e) => console.log(e));
   };

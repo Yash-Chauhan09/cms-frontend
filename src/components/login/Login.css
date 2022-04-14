@@ -86,6 +86,13 @@
 .login__formBtn:hover {
   background-color: #4b42f7;
 }
+.reset {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #f5f8fa;
+}
 
 /* Media Queries */
 @media (max-width: 1000px) {

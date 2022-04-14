@@ -19,6 +19,7 @@ function AnswerNode({ bookid }) {
   const [expVal, setExpVal] = useState("");
   const [finalVal, setFinalVal] = useState("");
   const [state, setState] = useState("");
+  const [quesres, setQuesres] = useState();
   // const [questionVal, setQuestionVal] = useState({});
   // const [answerVal, setAnswerval] = useState({});
 
@@ -31,48 +32,44 @@ function AnswerNode({ bookid }) {
         accesstoken: accesstoken,
       },
     }).then((res) => {
-      // console.log(res);
+      console.log(res.data);
+      answerVal = {};
       // console.log(res.data.answer);
 
       if (res.data.answer === "null") {
         answerVal = {};
       } else {
+        console.log(res.data.ans);
         const str = res.data.answer;
         answerVal = JSON.parse(str.substring(1, str.length - 1));
       }
       if (res.data.question === "null") {
-        questionVal.question = "Null";
+        questionVal = {};
       } else {
-        // console.log(questionVal);
+        questionVal = {};
         const str2 = res.data.question;
         questionVal = JSON.parse(str2.substring(1, str2.length - 1));
-        // const str2 = res.data.question;
-        // console.log(str2);
-        // questionVal = JSON.parse(str2.substring(1, str2.length - 1));
       }
       setResponse(res.data);
+      setQuesres(res.data.question);
       setState("");
     });
     // .catch((e) => console.log(e));
   }, [bookid, quesnode, accesstoken, state]);
   const handleAddExp = () => {
-    // setAnswerval((prev) => {
-    //   return { ...prev, explaination: expVal, finalAns: finalVal };
-    // });
+    // console.log(JSON.stringify(JSON.stringify(questionVal)));
+    // console.log(response);
+
+    let data = "null";
     answerVal.explaination = expVal;
     answerVal.type = "answer";
+    data = JSON.stringify(JSON.stringify(answerVal));
     let content = {
-      type: response.type,
-      parentid: response.parentid,
-      bookid: bookid,
-      name: response.name,
-      page: response.page,
-      question: JSON.stringify(JSON.stringify(questionVal)),
-      answer: JSON.stringify(JSON.stringify(answerVal)),
+      answer: data,
     };
     axios({
       method: "put",
-      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${quesnode}`,
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${quesnode}/answer`,
       data: content,
       headers: {
         "Content-Type": "application/json",
@@ -83,25 +80,23 @@ function AnswerNode({ bookid }) {
       setExpVal("");
       setState(res);
       answerVal = {};
+      questionVal = {};
     });
     // .catch((e) => console.log(e));
   };
   const handleAddFinalAns = () => {
+    // console.log(JSON.stringify(JSON.stringify(questionVal)));
+    // console.log(response);
+    let data = "null";
     answerVal.final = finalVal;
     answerVal.type = "answer";
-
+    data = JSON.stringify(JSON.stringify(answerVal));
     let content = {
-      type: response.type,
-      parentid: response.parentid,
-      bookid: bookid,
-      name: response.name,
-      page: response.page,
-      question: JSON.stringify(JSON.stringify(questionVal)),
-      answer: JSON.stringify(JSON.stringify(answerVal)),
+      answer: data,
     };
     axios({
       method: "put",
-      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${quesnode}`,
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${quesnode}/answer`,
       data: content,
       headers: {
         "Content-Type": "application/json",
@@ -112,10 +107,12 @@ function AnswerNode({ bookid }) {
       setFinalVal("");
       setState(res);
       answerVal = {};
+      questionVal = {};
     });
     // .catch((e) => console.log(e));
   };
-  const math = String.raw`${questionVal.question}`;
+  const math = String.raw`${questionVal.question1}`;
+  const math2 = String.raw`${questionVal.question2}`;
   const opta = String.raw`${questionVal.optiona}`;
   const optb = String.raw`${questionVal.optionb}`;
   const optc = String.raw`${questionVal.optionc}`;
@@ -123,7 +120,7 @@ function AnswerNode({ bookid }) {
   const expAns = String.raw`${answerVal.explaination}`;
   const finalAns = String.raw`${answerVal.final}`;
   const displayQuestion = () => {
-    if (questionVal.question === "Null") {
+    if (Object.keys(questionVal).length === 0) {
       return "Null";
     } else if (questionVal.type === "paragraph") {
       return (
@@ -137,7 +134,7 @@ function AnswerNode({ bookid }) {
       return (
         <>
           <div className="answerNode__questionShow">
-            <span>Q) </span> <MathJax math={math} />
+            <span>Q) </span> <MathJax math={math2} />
           </div>
           <div className="answerNode__questionShow">
             <span>a) </span> <MathJax math={opta} />
@@ -262,7 +259,7 @@ function AnswerNode({ bookid }) {
         </div>
       </div>
     );
-  } else {
+  } else if (response.answer !== "null") {
     return (
       <div className="answerNode">
         <div className="answerNode__question">

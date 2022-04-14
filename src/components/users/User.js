@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useStateValue } from "../../StateProvider";
 import axios from "axios";
 import UserTable from "./UserTable";
+import { Redirect } from "react-router-dom";
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -35,16 +36,26 @@ function User() {
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [users, setUsers] = useState([]);
+  const [newUser, setNewUser] = useState(false);
+  function makeToken(length) {
+    var result = "";
+    var characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
   const handleClose = () => {
     setOpen(false);
   };
   const handlePost = () => {
     let content = {
       email: email,
-      password: password,
+      password: makeToken(10),
       userRole: role,
     };
     axios({
@@ -59,7 +70,6 @@ function User() {
       .then((res) => {
         // console.log(res);
         setEmail("");
-        setPassword("");
         setRole("");
         setOpen(false);
       })
@@ -75,71 +85,74 @@ function User() {
       },
     })
       .then((res) => {
-        // console.log(res);
-        setUsers(res.data);
+        if (res.data.error === "user not verified") {
+          setNewUser(true);
+        } else {
+          setUsers(res.data);
+        }
       })
       .catch((e) => console.log(e));
   }, [accesstoken]);
-  return (
-    <div className="user">
-      <Modal open={open} onClose={handleClose}>
-        <div style={modalStyle} className={classes.paper}>
-          <form className="invitation__form">
-            <h2>Invite new user</h2>
-            <Input
-              placeholder="Email email"
-              type="text"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            ></Input>
-            <Input
-              placeholder="Enter password"
-              type="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            ></Input>
-            <Input
-              placeholder="Enter role"
-              type="text"
-              value={role}
-              onChange={(e) => {
-                setRole(e.target.value);
-              }}
-            ></Input>
-            <Button onClick={() => handlePost()} className="submitBtn">
-              Invite
-            </Button>
-          </form>
+  if (newUser === false) {
+    return (
+      <div className="user">
+        <Modal open={open} onClose={handleClose}>
+          <div style={modalStyle} className={classes.paper}>
+            <form className="invitation__form">
+              <h2>Invite new user</h2>
+              <Input
+                placeholder="Email email"
+                type="text"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              ></Input>
+              <Input
+                placeholder="Enter role"
+                type="text"
+                value={role}
+                onChange={(e) => {
+                  setRole(e.target.value);
+                }}
+              ></Input>
+              <Button onClick={() => handlePost()} className="submitBtn">
+                Invite
+              </Button>
+            </form>
+          </div>
+        </Modal>
+        <div className="user__top">
+          <h2>Users</h2>
+          <button className="user__topButton" onClick={() => setOpen(true)}>
+            <span>
+              <AddIcon />
+            </span>
+            Invite New User
+          </button>
         </div>
-      </Modal>
-      <div className="user__top">
-        <h2>Users</h2>
-        <button className="user__topButton" onClick={() => setOpen(true)}>
-          <span>
-            <AddIcon />
-          </span>
-          Invite New User
-        </button>
+        <div className="user__body">
+          <table className="library__table">
+            <tr>
+              <th className="library__tableHead">Email</th>
+              <th className="library__tableHead">Role</th>
+            </tr>
+            {users.map((data, index) => {
+              return (
+                <UserTable
+                  key={index}
+                  email={data.email}
+                  role={data.userRole}
+                />
+              );
+            })}
+          </table>
+        </div>
       </div>
-      <div className="user__body">
-        <table className="library__table">
-          <tr>
-            <th className="library__tableHead">Email</th>
-            <th className="library__tableHead">Role</th>
-          </tr>
-          {users.map((data, index) => {
-            return (
-              <UserTable key={index} email={data.email} role={data.userRole} />
-            );
-          })}
-        </table>
-      </div>
-    </div>
-  );
+    );
+  } else {
+    return <Redirect to={"/reset-password"} />;
+  }
 }
 
 export default User;

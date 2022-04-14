@@ -9,7 +9,8 @@ import ClassicEditor from "ckeditor5-classic-with-mathtype";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import MathJax from "react-mathjax-preview";
 let quesData = {};
-function QuestionNode({ bookid }) {
+let ansVal = {};
+function QuestionNode({ bookid, setChstate }) {
   const { quesnode } = useParams();
   const [{ accesstoken }] = useStateValue();
   const [question, setQuestion] = useState({});
@@ -26,7 +27,7 @@ function QuestionNode({ bookid }) {
   const [opt3Data, setOption3Data] = useState(``);
   const [opt4Data, setOption4Data] = useState(``);
   // const [questionshow, setQuestionShow] = useState("Add Question");
-  const [questionval, setQuestionVal] = useState("");
+  const [questionval, setQuestionVal] = useState(``);
   const [state, setState] = useState();
   useEffect(() => {
     axios({
@@ -39,34 +40,44 @@ function QuestionNode({ bookid }) {
     })
       .then((res) => {
         setState("");
+        console.log(res);
         setQuestion(res.data);
+        if (res.data.answer === "null") {
+          ansVal = {};
+        } else {
+          const str = res.data.answer;
+          ansVal = JSON.parse(str.substring(1, str.length - 1));
+        }
         if (res.data.question === "null") {
           quesData = {};
         } else {
           const str = res.data.question;
           quesData = JSON.parse(str.substring(1, str.length - 1));
-          setMques(quesData.question);
+          setMques(quesData.question2);
           setOption1Data(quesData.optiona);
           setOption2Data(quesData.optionb);
           setOption3Data(quesData.optionc);
           setOption4Data(quesData.optiond);
+          // setQuestionVal(quesData.question1);
         }
       })
       .catch((e) => console.log(e));
   }, [bookid, quesnode, accesstoken, state]);
   const handleAddQuestion = () => {
+    console.log(questionval);
     quesData.type = "paragraph";
-    quesData.question = questionval;
+    quesData.question1 = questionval;
+    console.log(question.answer);
     let data = "null";
     data = JSON.stringify(JSON.stringify(quesData));
     let content = {
-      type: question.type,
+      type: "question",
       parentid: question.parentid,
       bookid: bookid,
       name: question.name,
       page: question.page,
       question: data,
-      answer: question.answer,
+      answer: JSON.stringify(JSON.stringify(ansVal)),
     };
     axios({
       method: "put",
@@ -82,27 +93,31 @@ function QuestionNode({ bookid }) {
         setShowEdit(false);
         setQuestionVal("");
         setState(res);
+        setChstate(res);
+        ansVal = {};
       })
       .catch((e) => console.log(e));
   };
   const handleAddMcq = () => {
     quesData.type = "mcq";
-    quesData.question = mques;
+    quesData.question2 = mques;
     quesData.optiona = opt1Data;
     quesData.optionb = opt2Data;
     quesData.optionc = opt3Data;
     quesData.optiond = opt4Data;
+    // console.log(question.answer);
     let data = "null";
     data = JSON.stringify(JSON.stringify(quesData));
+    // console.log(data);
 
     let content = {
-      type: question.type,
+      type: "question",
       parentid: question.parentid,
       bookid: bookid,
       name: question.name,
       page: question.page,
       question: data,
-      answer: question.answer,
+      answer: JSON.stringify(JSON.stringify(ansVal)),
     };
     axios({
       method: "put",
@@ -115,24 +130,26 @@ function QuestionNode({ bookid }) {
     })
       .then((res) => {
         // console.log(res);
+        ansVal = {};
         setShowMultiple(false);
-        quesData = {};
+        // quesData = {};
         setState(res);
         setMcqQues(false);
         setOpt1(false);
         setOpt2(false);
         setOpt3(false);
         setOpt4(false);
+        setChstate(res);
       })
       .catch((e) => console.log(e));
   };
-  const math = String.raw`${quesData.question}`;
+  const math = String.raw`${quesData.question1}`;
   const mcqQuestion = String.raw`${mques}`;
   const opta = String.raw`${opt1Data}`;
   const optb = String.raw`${opt2Data}`;
   const optc = String.raw`${opt3Data}`;
   const optd = String.raw`${opt4Data}`;
-  const resQues = String.raw`${quesData.question}`;
+  const resQues = String.raw`${quesData.question2}`;
   const resopta = String.raw`${quesData.optiona}`;
   const resoptb = String.raw`${quesData.optionb}`;
   const resoptc = String.raw`${quesData.optionc}`;

@@ -12,17 +12,19 @@ import ResetPass from "./components/login/ResetPass";
 // import Chapter from "./components/Book/Chapter";
 
 function App() {
-  const [{ user, userRole, accesstoken }, dispatch] = useStateValue();
+  const [{ user }, dispatch] = useStateValue();
   useEffect(() => {
     const user = localStorage.getItem("user");
     const userRole = localStorage.getItem("role");
     const accessToken = localStorage.getItem("token");
+    const resetToken = localStorage.getItem("resetToken");
     if (accessToken) {
       dispatch({
         type: actionTypes.SET_USER,
         user: user,
         userRole: userRole,
         accesstoken: accessToken,
+        resetToken: resetToken,
       });
     }
   }, [dispatch]);
@@ -47,6 +49,9 @@ function App() {
         <Route path="/user">
           <User />
         </Route>
+        <Route path="/reset-password">
+          <ResetPass />
+        </Route>
         <Route path="/" exact>
           <Redirect to="/library" />
         </Route>
@@ -54,9 +59,6 @@ function App() {
     </div>
   ) : (
     <>
-      <Route path="/reset-password/:token" exact={true}>
-        <ResetPass />
-      </Route>
       <Route path="/" exact={true}>
         <Login />
       </Route>

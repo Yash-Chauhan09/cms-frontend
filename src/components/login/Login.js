@@ -31,10 +31,12 @@ function Login() {
             user: res.data.email,
             userRole: res.data.role,
             accesstoken: res.data.accessToken,
+            resetToken: res.data.resetPasswordToken,
           });
           localStorage.setItem("token", res.data.accessToken);
           localStorage.setItem("user", res.data.email);
           localStorage.setItem("role", res.data.role);
+          localStorage.setItem("resetToken", res.data.resetPasswordToken);
         } else {
           console.log(res);
         }
