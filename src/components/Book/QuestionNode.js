@@ -40,10 +40,9 @@ function QuestionNode({ bookid, setChstate }) {
     })
       .then((res) => {
         setState("");
-        console.log(res);
         setQuestion(res.data);
         if (res.data.answer === "null") {
-          ansVal = {};
+          ansVal.null = "null";
         } else {
           const str = res.data.answer;
           ansVal = JSON.parse(str.substring(1, str.length - 1));
@@ -64,14 +63,12 @@ function QuestionNode({ bookid, setChstate }) {
       .catch((e) => console.log(e));
   }, [bookid, quesnode, accesstoken, state]);
   const handleAddQuestion = () => {
-    console.log(questionval);
     quesData.type = "paragraph";
     quesData.question1 = questionval;
-    console.log(question.answer);
     let data = "null";
     data = JSON.stringify(JSON.stringify(quesData));
     let content = {
-      type: "question",
+      type: question.type,
       parentid: question.parentid,
       bookid: bookid,
       name: question.name,
@@ -111,7 +108,7 @@ function QuestionNode({ bookid, setChstate }) {
     // console.log(data);
 
     let content = {
-      type: "question",
+      type: question.type,
       parentid: question.parentid,
       bookid: bookid,
       name: question.name,

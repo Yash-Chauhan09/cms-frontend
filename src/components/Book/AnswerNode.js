@@ -8,7 +8,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "ckeditor5-classic-with-mathtype";
 import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
-let answerVal = {};
+let answerVal = { null: "null" };
 let questionVal = {};
 function AnswerNode({ bookid }) {
   const { quesnode } = useParams();
@@ -19,9 +19,6 @@ function AnswerNode({ bookid }) {
   const [expVal, setExpVal] = useState("");
   const [finalVal, setFinalVal] = useState("");
   const [state, setState] = useState("");
-  const [quesres, setQuesres] = useState();
-  // const [questionVal, setQuestionVal] = useState({});
-  // const [answerVal, setAnswerval] = useState({});
 
   useEffect(() => {
     axios({
@@ -32,14 +29,13 @@ function AnswerNode({ bookid }) {
         accesstoken: accesstoken,
       },
     }).then((res) => {
-      console.log(res.data);
       answerVal = {};
       // console.log(res.data.answer);
 
       if (res.data.answer === "null") {
         answerVal = {};
       } else {
-        console.log(res.data.ans);
+        answerVal = {};
         const str = res.data.answer;
         answerVal = JSON.parse(str.substring(1, str.length - 1));
       }
@@ -51,7 +47,6 @@ function AnswerNode({ bookid }) {
         questionVal = JSON.parse(str2.substring(1, str2.length - 1));
       }
       setResponse(res.data);
-      setQuesres(res.data.question);
       setState("");
     });
     // .catch((e) => console.log(e));
@@ -61,6 +56,7 @@ function AnswerNode({ bookid }) {
     // console.log(response);
 
     let data = "null";
+    delete answerVal["null"];
     answerVal.explaination = expVal;
     answerVal.type = "answer";
     data = JSON.stringify(JSON.stringify(answerVal));
@@ -88,6 +84,7 @@ function AnswerNode({ bookid }) {
     // console.log(JSON.stringify(JSON.stringify(questionVal)));
     // console.log(response);
     let data = "null";
+    delete answerVal["null"];
     answerVal.final = finalVal;
     answerVal.type = "answer";
     data = JSON.stringify(JSON.stringify(answerVal));
@@ -152,7 +149,7 @@ function AnswerNode({ bookid }) {
       );
     }
   };
-  if (response.answer === "null") {
+  if (answerVal.null === "null" || response.answer === "null") {
     return (
       <div className="answerNode">
         <div className="answerNode__question">
@@ -259,7 +256,7 @@ function AnswerNode({ bookid }) {
         </div>
       </div>
     );
-  } else if (response.answer !== "null") {
+  } else {
     return (
       <div className="answerNode">
         <div className="answerNode__question">
@@ -270,7 +267,11 @@ function AnswerNode({ bookid }) {
           <div className="answer__show">
             <div className="question__data">
               <h2>Explaination</h2>
-              <MathJax math={expAns} />
+              {expAns !== "undefined" ? (
+                <MathJax math={expAns} />
+              ) : (
+                <h2> Add explaination</h2>
+              )}
             </div>
             <div className="question__edit">
               <IconButton onClick={() => setShowExp(true)}>
