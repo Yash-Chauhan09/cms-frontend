@@ -11,6 +11,11 @@
   border-radius: 10px;
   background-color: #fff;
 }
+.csv__btn {
+  font-weight: 600 !important;
+  border-radius: 16px !important;
+  text-transform: capitalize !important;
+}
 .toc__topHeading {
   font-size: 0.9rem;
   margin-right: 1rem;
