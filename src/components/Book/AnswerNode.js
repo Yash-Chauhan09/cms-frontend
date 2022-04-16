@@ -74,6 +74,7 @@ function AnswerNode({ bookid }) {
     }).then((res) => {
       setShowExp(false);
       setExpVal("");
+      setFinalVal("");
       setState(res);
       answerVal = {};
       questionVal = {};
@@ -102,6 +103,7 @@ function AnswerNode({ bookid }) {
     }).then((res) => {
       setShowFinal(false);
       setFinalVal("");
+      setExpVal("");
       setState(res);
       answerVal = {};
       questionVal = {};
