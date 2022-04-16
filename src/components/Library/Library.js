@@ -94,7 +94,7 @@ function Library() {
       .catch((e) => console.log(e));
   }, [accesstoken, state]);
   const [pageNumber, setPageNumber] = useState(0);
-  const tablePerPage = 4;
+  const tablePerPage = 10;
   const pagesVisited = pageNumber * tablePerPage;
 
   const displayTables = table
