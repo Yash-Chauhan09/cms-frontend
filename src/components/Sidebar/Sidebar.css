@@ -28,3 +28,6 @@
   background-color: rgba(230, 224, 224, 0.274) !important;
   border-right: 2px solid blue !important;
 }
+.sl-spinner3 {
+  height: 40px !important;
+}

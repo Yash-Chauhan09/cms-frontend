@@ -157,5 +157,10 @@
   display: flex;
   justify-content: space-between;
 }
-
+.loading__box {
+  width: 100%;
+  height: 50vh;
+  display: grid;
+  place-items: center;
+}
 /* https://drive.google.com/file/d/1HreF6Mubtl-5pS9hnl_voQgQYZHLr92D/view?usp=sharing */

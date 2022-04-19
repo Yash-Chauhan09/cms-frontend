@@ -9,8 +9,10 @@ function Login() {
   const [{}, dispatch] = useStateValue();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     let content = {
       email: email,
       password: password,
@@ -25,6 +27,7 @@ function Login() {
     })
       .then((res) => {
         // console.log(res);
+        setLoading(false);
         if (res.data.accessToken) {
           dispatch({
             type: actionTypes.SET_USER,
@@ -73,7 +76,7 @@ function Login() {
               autoComplete="off"
             />
             <button type="submit" className="login__formBtn">
-              Login
+              {loading ? "Loading..." : "Login"}
             </button>
           </form>
         </div>

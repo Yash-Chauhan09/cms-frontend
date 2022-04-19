@@ -11,6 +11,8 @@ import Modal from "@material-ui/core/Modal";
 import { Button, Input } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
+import Loader from "react-js-loader";
+
 // import { Redirect } from "react-router-dom";
 
 function getModalStyle() {
@@ -37,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 function Library() {
   const history = useHistory();
   const classes = useStyles();
+  const [loading, setLoading] = useState(true);
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
   const [{ accesstoken, userRole }] = useStateValue();
@@ -85,6 +88,7 @@ function Library() {
     })
       .then((res) => {
         // console.log(res);
+        setLoading(false);
         if (res.data.error === "user not verified") {
           setNewUser(true);
         } else {
@@ -335,17 +339,28 @@ function Library() {
           </div>
         </div>
         <table className="library__table">
-          <tbody>
-            <tr>
-              <th className="library__tableHead">Book</th>
-              <th className="library__tableHead">ISBN</th>
-              <th className="library__tableHead">Board</th>
-              <th className="library__tableHead">Class</th>
-              <th className="library__tableHead">Subject</th>
-              <th className="library__tableHead">Language</th>
-            </tr>
-            {displayTables}
-          </tbody>
+          {loading ? (
+            <div className="loading__box">
+              <Loader
+                type="spinner-default"
+                bgColor={"#3535CA"}
+                color={"#3535CA"}
+                size={60}
+              />
+            </div>
+          ) : (
+            <tbody>
+              <tr>
+                <th className="library__tableHead">Book</th>
+                <th className="library__tableHead">ISBN</th>
+                <th className="library__tableHead">Board</th>
+                <th className="library__tableHead">Class</th>
+                <th className="library__tableHead">Subject</th>
+                <th className="library__tableHead">Language</th>
+              </tr>
+              {displayTables}
+            </tbody>
+          )}
         </table>
         <div className="library__foter">
           <ReactPaginate

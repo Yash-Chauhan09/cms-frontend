@@ -8,6 +8,7 @@ import { useStateValue } from "../../StateProvider";
 import axios from "axios";
 import UserTable from "./UserTable";
 import { Redirect } from "react-router-dom";
+import Loader from "react-js-loader";
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -33,6 +34,7 @@ function User() {
   const [{ accesstoken }] = useStateValue();
 
   const classes = useStyles();
+  const [loading, setLoading] = useState(true);
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
@@ -85,6 +87,7 @@ function User() {
       },
     })
       .then((res) => {
+        setLoading(false);
         if (res.data.error === "user not verified") {
           setNewUser(true);
         } else {
@@ -132,21 +135,32 @@ function User() {
           </button>
         </div>
         <div className="user__body">
-          <table className="library__table">
-            <tr>
-              <th className="library__tableHead">Email</th>
-              <th className="library__tableHead">Role</th>
-            </tr>
-            {users.map((data, index) => {
-              return (
-                <UserTable
-                  key={index}
-                  email={data.email}
-                  role={data.userRole}
-                />
-              );
-            })}
-          </table>
+          {loading ? (
+            <div className="loading__box">
+              <Loader
+                type="spinner-default"
+                bgColor={"#3535CA"}
+                color={"#3535CA"}
+                size={60}
+              />
+            </div>
+          ) : (
+            <table className="library__table">
+              <tr>
+                <th className="library__tableHead">Email</th>
+                <th className="library__tableHead">Role</th>
+              </tr>
+              {users.map((data, index) => {
+                return (
+                  <UserTable
+                    key={index}
+                    email={data.email}
+                    role={data.userRole}
+                  />
+                );
+              })}
+            </table>
+          )}
         </div>
       </div>
     );

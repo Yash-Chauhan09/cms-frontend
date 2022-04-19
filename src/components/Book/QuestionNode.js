@@ -68,17 +68,11 @@ function QuestionNode({ bookid, setChstate }) {
     let data = "null";
     data = JSON.stringify(JSON.stringify(quesData));
     let content = {
-      type: question.type,
-      parentid: question.parentid,
-      bookid: bookid,
-      name: question.name,
-      page: question.page,
       question: data,
-      answer: JSON.stringify(JSON.stringify(ansVal)),
     };
     axios({
       method: "put",
-      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${quesnode}`,
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${quesnode}/question`,
       data: content,
       headers: {
         "Content-Type": "application/json",
@@ -108,17 +102,11 @@ function QuestionNode({ bookid, setChstate }) {
     // console.log(data);
 
     let content = {
-      type: question.type,
-      parentid: question.parentid,
-      bookid: bookid,
-      name: question.name,
-      page: question.page,
       question: data,
-      answer: JSON.stringify(JSON.stringify(ansVal)),
     };
     axios({
       method: "put",
-      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${quesnode}`,
+      url: `https://freecoedu-cms.herokuapp.com/index/book/${bookid}/node/${quesnode}/question`,
       data: content,
       headers: {
         "Content-Type": "application/json",

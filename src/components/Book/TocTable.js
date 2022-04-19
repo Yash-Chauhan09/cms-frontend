@@ -164,8 +164,6 @@ function TocTable({
       bookid: bookid,
       name: upch,
       page: upPage,
-      question: "null",
-      answer: "null",
     };
     axios({
       method: "put",
@@ -190,8 +188,6 @@ function TocTable({
       bookid: bookid,
       name: upex,
       page: upexpage,
-      question: "null",
-      answer: "null",
     };
     axios({
       method: "put",
@@ -216,8 +212,6 @@ function TocTable({
       bookid: bookid,
       name: upques,
       page: upquespage,
-      question: "null",
-      answer: "null",
     };
     axios({
       method: "put",
@@ -242,8 +236,6 @@ function TocTable({
       bookid: bookid,
       name: upquespart,
       page: upquespartpage,
-      question: "null",
-      answer: "null",
     };
     axios({
       method: "put",

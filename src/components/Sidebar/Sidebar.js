@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Sidebar.css";
 import { NavLink } from "react-router-dom";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
@@ -8,11 +8,14 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useStateValue } from "../../StateProvider";
 import axios from "axios";
 import { actionTypes } from "../../reducer";
+import Loader from "react-js-loader";
 // import ShowChartIcon from "@mui/icons-material/ShowChart";
 function Sidebar() {
   const [{ accesstoken, userRole }, dispatch] = useStateValue();
+  const [loading, setLoading] = useState(false);
   // const history = useHistory();
   const handleLogOut = () => {
+    setLoading(true);
     axios({
       method: "get",
       url: "https://freecoedu-cms.herokuapp.com/auth/signout",
@@ -22,6 +25,7 @@ function Sidebar() {
       },
     })
       .then(() => {
+        setLoading(false);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("role");
@@ -52,7 +56,16 @@ function Sidebar() {
         </NavLink>
       )}
       <div className="logout" onClick={() => handleLogOut()}>
-        <LogoutIcon />
+        {loading ? (
+          <Loader
+            type="spinner-default"
+            bgColor={"#3535CA"}
+            color={"#3535CA"}
+            size={40}
+          />
+        ) : (
+          <LogoutIcon />
+        )}
         <p>Logout</p>
       </div>
     </div>
